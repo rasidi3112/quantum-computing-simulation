@@ -1,12 +1,12 @@
 import streamlit as st # type: ignore
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+import numpy as np # type: ignore
+import matplotlib.pyplot as plt # type: ignore
+from matplotlib.patches import Rectangle # type: ignore
 import io
 
 st.set_page_config(
     page_title="Simulasi Quantum Computing",
-    page_icon="⚛️",
+    page_icon="",
     layout="wide"
 )
 class QuantumSimulator:
@@ -197,7 +197,7 @@ def plot_measurement_histogram(simulator, shots=1000):
     
     ax.set_xlabel('Hasil Pengukuran', fontsize=12, fontweight='bold')
     ax.set_ylabel(f'Frekuensi (dari {shots} shots)', fontsize=12, fontweight='bold')
-    ax.set_title(f'🎲 Histogram Pengukuran ({shots} Shots)', fontsize=14, fontweight='bold')
+    ax.set_title(f'Histogram Pengukuran ({shots} Shots)', fontsize=14, fontweight='bold')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     
 
@@ -238,13 +238,13 @@ def display_matrix(matrix, title):
 
 def main():
    
-    st.title("⚛️ Simulasi Quantum Computing Interaktif")
+    st.title(" Simulasi Quantum Computing Interaktif")
     st.markdown("---")
     
   
     with st.expander("ℹ️ Apa itu Quantum Computing?", expanded=False):
         st.markdown("""
-        ### 🎓 Pengantar Quantum Computing
+        ###  Pengantar Quantum Computing
         
         **Quantum Computing** adalah paradigma komputasi yang memanfaatkan fenomena mekanika kuantum seperti **superposisi** dan **entanglement**.
         
@@ -348,7 +348,7 @@ def main():
     col_left, col_right = st.columns([2, 1])
     
     with col_left:
-        st.subheader("📈 Visualisasi State Vector")
+        st.subheader(" Visualisasi State Vector")
         
        
         fig_state = plot_state_vector(simulator)
@@ -369,7 +369,7 @@ def main():
         st.markdown("---")
         
         # Histogram pengukuran
-        st.subheader("🎲 Simulasi Pengukuran")
+        st.subheader(" Simulasi Pengukuran")
         shots = st.slider("Jumlah Shots:", min_value=100, max_value=10000, value=1000, step=100)
         
         fig_measurement = plot_measurement_histogram(simulator, shots)
@@ -388,10 +388,10 @@ def main():
         )
     
     with col_right:
-        st.subheader("🧮 Informasi State")
+        st.subheader(" Informasi State")
         
         # Current state info
-        st.markdown("#### 📊 State Saat Ini:")
+        st.markdown("####  State Saat Ini:")
         
         basis_states = [bin(i)[2:].zfill(num_qubits) for i in range(simulator.dim)]
         amplitudes = simulator.get_amplitudes()

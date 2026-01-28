@@ -1,8 +1,8 @@
-<h1 align="center">Mini Quantum Lab — Streamlit Quantum Simulator</h1>
+<h1 align="center">Mini Quantum Lab - Streamlit Quantum Simulator</h1>
 
 <p align="center">
   <b>A lightweight interactive Quantum Computing Simulation Lab</b> built with Python, Streamlit, and NumPy.<br>
-  Visualize <b>qubit superposition</b>, <b>entanglement</b>, and <b>quantum gates</b> in real time — directly in your browser.
+  Visualize <b>qubit superposition</b>, <b>entanglement</b>, and <b>quantum gates</b> in real time - directly in your browser.
 </p>
 
 <hr>
@@ -25,9 +25,9 @@
 
 <h2> Technologies Used</h2>
 <ul>
-  <li> <b>Streamlit</b> — for an elegant, real-time web interface</li>
-  <li> <b>NumPy</b> — for matrix-based quantum state calculations</li>
-  <li> <b>Matplotlib</b> — for dynamic visualization of quantum states</li>
+  <li> <b>Streamlit</b> - for an elegant, real-time web interface</li>
+  <li> <b>NumPy</b> - for matrix-based quantum state calculations</li>
+  <li> <b>Matplotlib</b> - for dynamic visualization of quantum states</li>
 </ul>
 
 <hr>

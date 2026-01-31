@@ -13,7 +13,7 @@ if 'language' not in st.session_state:
 
 # Get current language
 lang = st.session_state.language
-
+ 
 st.set_page_config(
     page_title=get_text(lang, "page_title"),
     page_icon="⚛️",

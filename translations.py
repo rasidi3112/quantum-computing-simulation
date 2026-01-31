@@ -6,7 +6,7 @@ TRANSLATIONS = {
     "English": {
         "lang_code": "en",
         "flag": "🇬🇧",
-        
+         
         # Page config
         "page_title": "Quantum Computing Simulation",
         

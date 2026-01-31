@@ -4,11 +4,22 @@ import matplotlib.pyplot as plt # type: ignore
 from matplotlib.patches import Rectangle # type: ignore
 import io
 
+# Import translations
+from translations import TRANSLATIONS, AVAILABLE_LANGUAGES, get_text, get_gate_description
+
+# Initialize language in session state before page config
+if 'language' not in st.session_state:
+    st.session_state.language = "English"
+
+# Get current language
+lang = st.session_state.language
+
 st.set_page_config(
-    page_title="Simulasi Quantum Computing",
-    page_icon="",
+    page_title=get_text(lang, "page_title"),
+    page_icon="⚛️",
     layout="wide"
 )
+
 class QuantumSimulator:
     """Simulator quantum computing sederhana"""
     def __init__(self, num_qubits):
@@ -105,41 +116,43 @@ T_GATE = np.array([[1, 0], [0, np.exp(1j * np.pi / 4)]], dtype=complex)
 IDENTITY = np.eye(2, dtype=complex)
 
 
-GATE_INFO = {
-    "Hadamard (H)": {
-        "matrix": HADAMARD,
-        "desc": "Menciptakan superposisi: mengubah |0⟩ → (|0⟩ + |1⟩)/√2 dan |1⟩ → (|0⟩ - |1⟩)/√2",
-        "emoji": "🌊"
-    },
-    "Pauli-X": {
-        "matrix": PAULI_X,
-        "desc": "Flip bit: menukar |0⟩ ↔ |1⟩ (seperti NOT gate klasik)",
-        "emoji": "🔄"
-    },
-    "Pauli-Y": {
-        "matrix": PAULI_Y,
-        "desc": "Rotasi π radian pada sumbu Y di Bloch sphere",
-        "emoji": "🔃"
-    },
-    "Pauli-Z": {
-        "matrix": PAULI_Z,
-        "desc": "Phase flip: mengubah tanda fase |1⟩ menjadi -|1⟩",
-        "emoji": "⚡"
-    },
-    "S Gate": {
-        "matrix": S_GATE,
-        "desc": "Phase shift π/2: menambah fase i pada |1⟩",
-        "emoji": "📐"
-    },
-    "T Gate": {
-        "matrix": T_GATE,
-        "desc": "Phase shift π/4: penting untuk komputasi universal",
-        "emoji": "🎯"
+def get_gate_info(lang):
+    """Get gate info with translated descriptions"""
+    return {
+        "Hadamard (H)": {
+            "matrix": HADAMARD,
+            "desc": get_gate_description(lang, "Hadamard (H)"),
+            "emoji": "🌊"
+        },
+        "Pauli-X": {
+            "matrix": PAULI_X,
+            "desc": get_gate_description(lang, "Pauli-X"),
+            "emoji": "🔄"
+        },
+        "Pauli-Y": {
+            "matrix": PAULI_Y,
+            "desc": get_gate_description(lang, "Pauli-Y"),
+            "emoji": "🔃"
+        },
+        "Pauli-Z": {
+            "matrix": PAULI_Z,
+            "desc": get_gate_description(lang, "Pauli-Z"),
+            "emoji": "⚡"
+        },
+        "S Gate": {
+            "matrix": S_GATE,
+            "desc": get_gate_description(lang, "S Gate"),
+            "emoji": "📐"
+        },
+        "T Gate": {
+            "matrix": T_GATE,
+            "desc": get_gate_description(lang, "T Gate"),
+            "emoji": "🎯"
+        }
     }
-}
 
 
-def plot_state_vector(simulator):
+def plot_state_vector(simulator, lang):
     """Visualisasi state vector (amplitudo dan fase)"""
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
     
@@ -150,9 +163,9 @@ def plot_state_vector(simulator):
 
     colors = plt.cm.viridis(probabilities / probabilities.max() if probabilities.max() > 0 else probabilities)
     bars1 = ax1.bar(basis_states, probabilities, color=colors, edgecolor='black', linewidth=1.5)
-    ax1.set_xlabel('Basis State |x⟩', fontsize=12, fontweight='bold')
-    ax1.set_ylabel('Probabilitas P(x)', fontsize=12, fontweight='bold')
-    ax1.set_title('📊 Distribusi Probabilitas Pengukuran', fontsize=14, fontweight='bold')
+    ax1.set_xlabel(get_text(lang, "basis_state_label"), fontsize=12, fontweight='bold')
+    ax1.set_ylabel(get_text(lang, "probability_label"), fontsize=12, fontweight='bold')
+    ax1.set_title(get_text(lang, "probability_dist_title"), fontsize=14, fontweight='bold')
     ax1.grid(axis='y', alpha=0.3, linestyle='--')
     ax1.set_ylim([0, 1.1])
     
@@ -169,12 +182,12 @@ def plot_state_vector(simulator):
     real_parts = np.real(amplitudes)
     imag_parts = np.imag(amplitudes)
     
-    ax2.bar(x - width/2, real_parts, width, label='Real', color='#3498db', edgecolor='black')
-    ax2.bar(x + width/2, imag_parts, width, label='Imajiner', color='#e74c3c', edgecolor='black')
+    ax2.bar(x - width/2, real_parts, width, label=get_text(lang, "real_label"), color='#3498db', edgecolor='black')
+    ax2.bar(x + width/2, imag_parts, width, label=get_text(lang, "imaginary_label"), color='#e74c3c', edgecolor='black')
     
-    ax2.set_xlabel('Basis State |x⟩', fontsize=12, fontweight='bold')
-    ax2.set_ylabel('Amplitudo', fontsize=12, fontweight='bold')
-    ax2.set_title('🌊 Amplitudo Kompleks State Vector', fontsize=14, fontweight='bold')
+    ax2.set_xlabel(get_text(lang, "basis_state_label"), fontsize=12, fontweight='bold')
+    ax2.set_ylabel(get_text(lang, "amplitude_label"), fontsize=12, fontweight='bold')
+    ax2.set_title(get_text(lang, "amplitude_title"), fontsize=14, fontweight='bold')
     ax2.set_xticks(x)
     ax2.set_xticklabels(basis_states)
     ax2.legend(fontsize=10)
@@ -184,7 +197,7 @@ def plot_state_vector(simulator):
     plt.tight_layout()
     return fig
 
-def plot_measurement_histogram(simulator, shots=1000):
+def plot_measurement_histogram(simulator, shots, lang):
     """Histogram hasil pengukuran"""
     outcomes = simulator.measure(shots)
     basis_states = [bin(i)[2:].zfill(simulator.num_qubits) for i in range(simulator.dim)]
@@ -195,9 +208,9 @@ def plot_measurement_histogram(simulator, shots=1000):
     colors = plt.cm.plasma(counts / counts.max() if counts.max() > 0 else counts)
     bars = ax.bar(basis_states, counts, color=colors, edgecolor='black', linewidth=1.5)
     
-    ax.set_xlabel('Hasil Pengukuran', fontsize=12, fontweight='bold')
-    ax.set_ylabel(f'Frekuensi (dari {shots} shots)', fontsize=12, fontweight='bold')
-    ax.set_title(f'Histogram Pengukuran ({shots} Shots)', fontsize=14, fontweight='bold')
+    ax.set_xlabel(get_text(lang, "measurement_result_label"), fontsize=12, fontweight='bold')
+    ax.set_ylabel(get_text(lang, "frequency_label", shots=shots), fontsize=12, fontweight='bold')
+    ax.set_title(get_text(lang, "histogram_title", shots=shots), fontsize=14, fontweight='bold')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     
 
@@ -211,9 +224,9 @@ def plot_measurement_histogram(simulator, shots=1000):
     plt.tight_layout()
     return fig
 
-def display_matrix(matrix, title):
+def display_matrix(matrix, title, lang):
     """Tampilkan representasi matrix gate"""
-    st.markdown(f"### 🔢 {title}")
+    st.markdown(f"### 🔢 {get_text(lang, 'matrix_title')} {title}")
     
 
     matrix_str = "```\n"
@@ -237,40 +250,53 @@ def display_matrix(matrix, title):
 
 
 def main():
-   
-    st.title(" Simulasi Quantum Computing Interaktif")
+    # Get current language
+    lang = st.session_state.language
+    
+    # Get translated gate info
+    GATE_INFO = get_gate_info(lang)
+    
+    st.title(get_text(lang, "main_title"))
     st.markdown("---")
     
-  
-    with st.expander("ℹ️ Apa itu Quantum Computing?", expanded=False):
-        st.markdown("""
-        ###  Pengantar Quantum Computing
-        
-        **Quantum Computing** adalah paradigma komputasi yang memanfaatkan fenomena mekanika kuantum seperti **superposisi** dan **entanglement**.
-        
-        #### 🔹 Qubit (Quantum Bit)
-        Berbeda dengan bit klasik (0 atau 1), **qubit** dapat berada dalam **superposisi** dari kedua state:
-        - |ψ⟩ = α|0⟩ + β|1⟩
-        - |α|² + |β|² = 1 (normalisasi)
-        
-        #### 🔹 Quantum Gates
-        **Gate kuantum** adalah operasi yang memanipulasi state qubit, analog dengan logic gate klasik namun **reversible** dan **unitary**.
-        
-        #### 🔹 Pengukuran
-        Saat diukur, qubit **collapse** ke salah satu basis state (|0⟩ atau |1⟩) dengan probabilitas |α|² dan |β|².
-        """)
+    # Language selector at the top of sidebar
+    st.sidebar.header(get_text(lang, "language_label"))
+    
+    # Create language options with flags
+    lang_options = {f"{TRANSLATIONS[l]['flag']} {l}": l for l in AVAILABLE_LANGUAGES}
+    current_lang_display = f"{TRANSLATIONS[lang]['flag']} {lang}"
+    
+    selected_lang_display = st.sidebar.selectbox(
+        "",
+        options=list(lang_options.keys()),
+        index=list(lang_options.keys()).index(current_lang_display),
+        label_visibility="collapsed"
+    )
+    
+    selected_lang = lang_options[selected_lang_display]
+    
+    # Update language if changed
+    if selected_lang != lang:
+        st.session_state.language = selected_lang
+        st.rerun()
+    
+    st.sidebar.markdown("---")
+    
+    with st.expander(get_text(lang, "intro_header"), expanded=False):
+        st.markdown(get_text(lang, "intro_title"))
+        st.markdown(get_text(lang, "intro_content"))
     
     st.markdown("---")
     
    
-    st.sidebar.header("⚙️ Pengaturan Simulasi")
+    st.sidebar.header(get_text(lang, "sidebar_settings"))
     
     
     num_qubits = st.sidebar.selectbox(
-        "Jumlah Qubit:",
+        get_text(lang, "num_qubits_label"),
         options=[1, 2, 3],
         index=0,
-        help="Pilih jumlah qubit untuk sistem kuantum (1-3 qubit)"
+        help=get_text(lang, "num_qubits_help")
     )
     
    
@@ -282,21 +308,21 @@ def main():
     simulator = st.session_state.simulator
     
     st.sidebar.markdown("---")
-    st.sidebar.subheader("🎛️ Tambahkan Quantum Gate")
+    st.sidebar.subheader(get_text(lang, "add_gate_header"))
     
     
     gate_name = st.sidebar.selectbox(
-        "Pilih Gate:",
+        get_text(lang, "select_gate"),
         options=list(GATE_INFO.keys()),
-        help="Pilih quantum gate yang akan diterapkan"
+        help=get_text(lang, "select_gate_help")
     )
     
     
     target_qubit = st.sidebar.selectbox(
-        "Target Qubit:",
+        get_text(lang, "target_qubit"),
         options=list(range(num_qubits)),
         format_func=lambda x: f"Q{x}",
-        help="Qubit yang akan dikenai gate"
+        help=get_text(lang, "target_qubit_help")
     )
     
 
@@ -304,54 +330,54 @@ def main():
     st.sidebar.info(f"{gate_data['emoji']} **{gate_name}**\n\n{gate_data['desc']}")
     
    
-    if st.sidebar.button("➕ Aplikasikan Gate", use_container_width=True):
+    if st.sidebar.button(get_text(lang, "apply_gate_btn"), use_container_width=True):
         simulator.apply_gate(gate_data['matrix'], target_qubit)
         st.session_state.circuit.append(f"{gate_name} → Q{target_qubit}")
-        st.sidebar.success(f"✅ {gate_name} diterapkan pada Q{target_qubit}")
+        st.sidebar.success(get_text(lang, "gate_applied_success", gate_name=gate_name, target=target_qubit))
     
     st.sidebar.markdown("---")
     
     
     if num_qubits > 1:
-        st.sidebar.subheader("🔗 CNOT Gate (2-Qubit)")
+        st.sidebar.subheader(get_text(lang, "cnot_header"))
         
         col1, col2 = st.sidebar.columns(2)
         control_qubit = col1.selectbox(
-            "Control:",
+            get_text(lang, "control_label"),
             options=list(range(num_qubits)),
             format_func=lambda x: f"Q{x}"
         )
         
         target_qubit_cnot = col2.selectbox(
-            "Target:",
+            get_text(lang, "target_label"),
             options=[q for q in range(num_qubits) if q != control_qubit],
             format_func=lambda x: f"Q{x}"
         )
         
-        st.sidebar.info("🔗 **CNOT**: Flip target qubit jika control qubit = |1⟩")
+        st.sidebar.info(get_text(lang, "cnot_info"))
         
-        if st.sidebar.button("➕ Aplikasikan CNOT", use_container_width=True):
+        if st.sidebar.button(get_text(lang, "apply_cnot_btn"), use_container_width=True):
             simulator.apply_gate(IDENTITY, target_qubit_cnot, control_qubit)
             st.session_state.circuit.append(f"CNOT: Q{control_qubit} → Q{target_qubit_cnot}")
-            st.sidebar.success(f"✅ CNOT diterapkan (C: Q{control_qubit}, T: Q{target_qubit_cnot})")
+            st.sidebar.success(get_text(lang, "cnot_applied_success", control=control_qubit, target=target_qubit_cnot))
     
     st.sidebar.markdown("---")
     
    
-    if st.sidebar.button("🔄 Reset Sistem", use_container_width=True, type="secondary"):
+    if st.sidebar.button(get_text(lang, "reset_btn"), use_container_width=True, type="secondary"):
         simulator.reset()
         st.session_state.circuit = []
-        st.sidebar.warning("⚠️ Sistem direset ke |0...0⟩")
+        st.sidebar.warning(get_text(lang, "reset_warning"))
         st.rerun()
     
     # Main area
     col_left, col_right = st.columns([2, 1])
     
     with col_left:
-        st.subheader(" Visualisasi State Vector")
+        st.subheader(get_text(lang, "state_vector_header"))
         
        
-        fig_state = plot_state_vector(simulator)
+        fig_state = plot_state_vector(simulator, lang)
         st.pyplot(fig_state)
         
         # Opsi save gambar
@@ -360,7 +386,7 @@ def main():
         buf.seek(0)
         
         st.download_button(
-            label="💾 Simpan Grafik State Vector",
+            label=get_text(lang, "save_state_vector_btn"),
             data=buf,
             file_name="quantum_state_vector.png",
             mime="image/png"
@@ -369,10 +395,10 @@ def main():
         st.markdown("---")
         
         # Histogram pengukuran
-        st.subheader(" Simulasi Pengukuran")
-        shots = st.slider("Jumlah Shots:", min_value=100, max_value=10000, value=1000, step=100)
+        st.subheader(get_text(lang, "measurement_header"))
+        shots = st.slider(get_text(lang, "shots_label"), min_value=100, max_value=10000, value=1000, step=100)
         
-        fig_measurement = plot_measurement_histogram(simulator, shots)
+        fig_measurement = plot_measurement_histogram(simulator, shots, lang)
         st.pyplot(fig_measurement)
         
         # Opsi save gambar
@@ -381,17 +407,17 @@ def main():
         buf2.seek(0)
         
         st.download_button(
-            label="💾 Simpan Histogram Pengukuran",
+            label=get_text(lang, "save_measurement_btn"),
             data=buf2,
             file_name="quantum_measurement.png",
             mime="image/png"
         )
     
     with col_right:
-        st.subheader(" Informasi State")
+        st.subheader(get_text(lang, "state_info_header"))
         
         # Current state info
-        st.markdown("####  State Saat Ini:")
+        st.markdown(get_text(lang, "current_state"))
         
         basis_states = [bin(i)[2:].zfill(num_qubits) for i in range(simulator.dim)]
         amplitudes = simulator.get_amplitudes()
@@ -417,25 +443,25 @@ def main():
         st.markdown("---")
         
         # Circuit history
-        st.markdown("#### 🔧 Riwayat Circuit:")
+        st.markdown(get_text(lang, "circuit_history"))
         
         if st.session_state.circuit:
             for i, gate in enumerate(st.session_state.circuit, 1):
                 st.markdown(f"{i}. {gate}")
         else:
-            st.info("Belum ada gate yang diterapkan")
+            st.info(get_text(lang, "no_gates_applied"))
         
         st.markdown("---")
         
         # Matrix representation
-        if st.checkbox("📐 Tampilkan Matrix Gate"):
-            display_matrix(gate_data['matrix'], f"Matrix {gate_name}")
+        if st.checkbox(get_text(lang, "show_matrix")):
+            display_matrix(gate_data['matrix'], gate_name, lang)
     
     # Footer
     st.markdown("---")
-    st.markdown("""
+    st.markdown(f"""
     <div style='text-align: center; color: #7f8c8d; font-size: 12px;'>
-        <p>⚛️ Dibuat dengan Rasidi menggunakan Streamlit & NumPy | Quantum Computing Simulator v1.0</p>
+        <p>{get_text(lang, "footer")}</p>
     </div>
     """, unsafe_allow_html=True)
 

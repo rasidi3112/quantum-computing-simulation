@@ -6,6 +6,16 @@ import io
 
 # Import translations
 from translations import TRANSLATIONS, AVAILABLE_LANGUAGES, get_text, get_gate_description
+from quantum_lab import QuantumSimulator
+from quantum_lab.gates import (
+    HADAMARD,
+    IDENTITY,
+    PAULI_X,
+    PAULI_Y,
+    PAULI_Z,
+    S_GATE,
+    T_GATE,
+)
 
 # Initialize language in session state before page config
 if 'language' not in st.session_state:
@@ -19,102 +29,6 @@ st.set_page_config(
     page_icon="⚛️",
     layout="wide"
 )
-
-class QuantumSimulator:
-    """Simulator quantum computing sederhana"""
-    def __init__(self, num_qubits):
-        self.num_qubits = num_qubits
-        self.dim = 2 ** num_qubits
-        self.state = np.zeros(self.dim, dtype=complex)
-        self.state[0] = 1.0
-        self.gate_history = []
-
-    def reset(self):
-        """Reset state ke |0...0⟩"""
-        self.state = np.zeros(self.dim, dtype=complex)
-        self.state[0] = 1.0
-        self.gate_history = []
-    
-    def apply_gate(self, gate_matrix, target_qubit, control_qubit=None):
-        """Aplikasikan gate ke qubit tertentu"""
-        if control_qubit is not None:
-        
-            full_gate = self._create_cnot_matrix(control_qubit, target_qubit)
-        else:
-        
-            full_gate = self._expand_gate(gate_matrix, target_qubit)
-        
-        self.state = full_gate @ self.state
-        self.state /= np.linalg.norm(self.state)
-    
-    def _expand_gate(self, gate, target):
-        """Ekspansi gate single-qubit ke sistem multi-qubit"""
-        I = np.eye(2)
-        matrices = []
-        
-        for i in range(self.num_qubits):
-            if i == target:
-                matrices.append(gate)
-            else:
-                matrices.append(I)
-        
-
-        result = matrices[0]
-        for m in matrices[1:]:
-            result = np.kron(result, m)
-        
-        return result
-    
-    def _create_cnot_matrix(self, control, target):
-        """Buat matrix CNOT untuk control dan target qubit"""
-
-        dim = self.dim
-        cnot = np.eye(dim, dtype=complex)
-        
-        for i in range(dim):
-            bits = [(i >> k) & 1 for k in range(self.num_qubits)]
-            
-            if bits[control] == 1:
-            
-                bits[target] = 1 - bits[target]
-                j = sum(b << k for k, b in enumerate(bits))
-                
-            
-                cnot[i, i] = 0
-                cnot[i, j] = 1
-        
-        return cnot
-    
-    def get_probabilities(self):
-        """Hitung probabilitas pengukuran setiap basis state"""
-        return np.abs(self.state) ** 2
-    
-    def get_amplitudes(self):
-        """Dapatkan amplitudo kompleks"""
-        return self.state
-    
-    def measure(self, shots=1000):
-        """Simulasi pengukuran"""
-        probs = self.get_probabilities()
-        outcomes = np.random.choice(self.dim, size=shots, p=probs)
-        return outcomes
-
-
-
-PAULI_X = np.array([[0, 1], [1, 0]], dtype=complex)
-PAULI_Y = np.array([[0, -1j], [1j, 0]], dtype=complex)
-PAULI_Z = np.array([[1, 0], [0, -1]], dtype=complex)
-
-
-HADAMARD = np.array([[1, 1], [1, -1]], dtype=complex) / np.sqrt(2)
-
-
-S_GATE = np.array([[1, 0], [0, 1j]], dtype=complex)
-T_GATE = np.array([[1, 0], [0, np.exp(1j * np.pi / 4)]], dtype=complex)
-
-
-IDENTITY = np.eye(2, dtype=complex)
-
 
 def get_gate_info(lang):
     """Get gate info with translated descriptions"""

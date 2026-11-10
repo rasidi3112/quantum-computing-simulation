@@ -17,7 +17,7 @@ from typing import Iterable, Sequence
 
 import numpy as np
 
-from . import gates
+from . import gates, measurement
 
 #: Hard upper bound on the register size (2**20 amplitudes = 16 MiB).
 MAX_QUBITS = 20
@@ -119,7 +119,11 @@ class QuantumSimulator:
 
     def get_probabilities(self) -> np.ndarray:
         """Born-rule probabilities ``|alpha_i|^2`` for every basis state."""
-        return np.abs(self._state) ** 2
+        return measurement.probabilities(self._state)
+
+    def marginal_probabilities(self, qubits: Sequence[int]) -> np.ndarray:
+        """Joint distribution of the listed qubits (first listed = leftmost bit)."""
+        return measurement.marginal_probabilities(self._state, qubits)
 
     # ------------------------------------------------------------------ gates
     def apply(self, matrix: np.ndarray, qubits: Sequence[int] | int) -> None:
@@ -203,7 +207,33 @@ class QuantumSimulator:
         return gates.cnot_matrix(control, target, self.num_qubits)
 
     # ------------------------------------------------------------ measurement
-    def measure(self, shots: int = 1000) -> np.ndarray:
-        """Sample ``shots`` basis-state indices from the Born distribution."""
-        probs = self.get_probabilities()
-        return np.random.choice(self.dim, size=shots, p=probs / probs.sum())
+    def measure(self, shots: int = 1000, rng=None) -> np.ndarray:
+        """Sample ``shots`` basis-state indices from the Born distribution.
+
+        This models *repeated preparation and measurement* of identical copies
+        of the state; the simulator's state is **not** changed.  ``rng`` may be
+        ``None``, an integer seed or a ``numpy.random.Generator``.
+        """
+        return measurement.sample_outcomes(self.get_probabilities(), shots, rng)
+
+    def sample_counts(self, shots: int = 1000, rng=None) -> np.ndarray:
+        """Like :meth:`measure` but returns the count of every basis state."""
+        return measurement.sample_counts(self.get_probabilities(), shots, rng)
+
+    def project(self, qubit: int, outcome: int) -> float:
+        """Collapse ``qubit`` onto ``outcome`` (post-selection).
+
+        Returns the probability that outcome had before the collapse.
+        """
+        self._state, prob = measurement.project_qubit(self._state, qubit, outcome)
+        return prob
+
+    def measure_qubit(self, qubit: int, rng=None) -> int:
+        """Projective measurement of one qubit: sample, collapse, renormalise."""
+        self._state, outcome = measurement.measure_qubit(self._state, qubit, rng)
+        return outcome
+
+    def measure_all(self, rng=None) -> int:
+        """Projective measurement of every qubit; returns the basis index."""
+        self._state, outcome = measurement.measure_all(self._state, rng)
+        return outcome

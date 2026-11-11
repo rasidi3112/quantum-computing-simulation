@@ -34,7 +34,7 @@ When measured, a qubit **collapses** to one of the basis states (|0⟩ or |1⟩)
         # Sidebar
         "sidebar_settings": "⚙️ Simulation Settings",
         "num_qubits_label": "Number of Qubits:",
-        "num_qubits_help": "Select the number of qubits for the quantum system (1-3 qubits)",
+        "num_qubits_help": "Select the number of qubits for the quantum system (1-{max_qubits} qubits)",
         "add_gate_header": "🎛️ Add Quantum Gate",
         "select_gate": "Select Gate:",
         "select_gate_help": "Select the quantum gate to apply",
@@ -83,7 +83,7 @@ When measured, a qubit **collapses** to one of the basis states (|0⟩ or |1⟩)
         "histogram_title": "Measurement Histogram ({shots} Shots)",
         
         # Footer
-        "footer": "⚛️ Created with Rasidi using Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Created with Rasidi using Streamlit & NumPy | Quantum Computing Simulator v2.0",
         
         # Gate descriptions
         "gate_hadamard_desc": "Creates superposition: transforms |0⟩ → (|0⟩ + |1⟩)/√2 and |1⟩ → (|0⟩ - |1⟩)/√2",
@@ -128,7 +128,7 @@ Saat diukur, qubit **collapse** ke salah satu basis state (|0⟩ atau |1⟩) den
         # Sidebar
         "sidebar_settings": "⚙️ Pengaturan Simulasi",
         "num_qubits_label": "Jumlah Qubit:",
-        "num_qubits_help": "Pilih jumlah qubit untuk sistem kuantum (1-3 qubit)",
+        "num_qubits_help": "Pilih jumlah qubit untuk sistem kuantum (1-{max_qubits} qubit)",
         "add_gate_header": "🎛️ Tambahkan Quantum Gate",
         "select_gate": "Pilih Gate:",
         "select_gate_help": "Pilih quantum gate yang akan diterapkan",
@@ -177,7 +177,7 @@ Saat diukur, qubit **collapse** ke salah satu basis state (|0⟩ atau |1⟩) den
         "histogram_title": "Histogram Pengukuran ({shots} Shots)",
         
         # Footer
-        "footer": "⚛️ Dibuat dengan Rasidi menggunakan Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Dibuat dengan Rasidi menggunakan Streamlit & NumPy | Quantum Computing Simulator v2.0",
         
         # Gate descriptions
         "gate_hadamard_desc": "Menciptakan superposisi: mengubah |0⟩ → (|0⟩ + |1⟩)/√2 dan |1⟩ → (|0⟩ - |1⟩)/√2",
@@ -222,7 +222,7 @@ Al medirse, un qubit **colapsa** a uno de los estados base (|0⟩ o |1⟩) con p
         # Sidebar
         "sidebar_settings": "⚙️ Configuración de Simulación",
         "num_qubits_label": "Número de Qubits:",
-        "num_qubits_help": "Seleccione el número de qubits para el sistema cuántico (1-3 qubits)",
+        "num_qubits_help": "Seleccione el número de qubits para el sistema cuántico (1-{max_qubits} qubits)",
         "add_gate_header": "🎛️ Añadir Puerta Cuántica",
         "select_gate": "Seleccionar Puerta:",
         "select_gate_help": "Seleccione la puerta cuántica a aplicar",
@@ -271,7 +271,7 @@ Al medirse, un qubit **colapsa** a uno de los estados base (|0⟩ o |1⟩) con p
         "histogram_title": "Histograma de Medición ({shots} Disparos)",
         
         # Footer
-        "footer": "⚛️ Creado con Rasidi usando Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Creado con Rasidi usando Streamlit & NumPy | Quantum Computing Simulator v2.0",
         
         # Gate descriptions
         "gate_hadamard_desc": "Crea superposición: transforma |0⟩ → (|0⟩ + |1⟩)/√2 y |1⟩ → (|0⟩ - |1⟩)/√2",
@@ -316,7 +316,7 @@ Al medirse, un qubit **colapsa** a uno de los estados base (|0⟩ o |1⟩) con p
         # Sidebar
         "sidebar_settings": "⚙️ 模拟设置",
         "num_qubits_label": "量子比特数量：",
-        "num_qubits_help": "选择量子系统的量子比特数量（1-3个量子比特）",
+        "num_qubits_help": "选择量子系统的量子比特数量（1-{max_qubits}个量子比特）",
         "add_gate_header": "🎛️ 添加量子门",
         "select_gate": "选择门：",
         "select_gate_help": "选择要应用的量子门",
@@ -365,7 +365,7 @@ Al medirse, un qubit **colapsa** a uno de los estados base (|0⟩ o |1⟩) con p
         "histogram_title": "测量直方图（{shots}次测量）",
         
         # Footer
-        "footer": "⚛️ 由Rasidi使用Streamlit和NumPy创建 | 量子计算模拟器 v1.0",
+        "footer": "⚛️ 由Rasidi使用Streamlit和NumPy创建 | 量子计算模拟器 v2.0",
         
         # Gate descriptions
         "gate_hadamard_desc": "创建叠加：将 |0⟩ → (|0⟩ + |1⟩)/√2 和 |1⟩ → (|0⟩ - |1⟩)/√2",
@@ -402,7 +402,7 @@ Al medirse, un qubit **colapsa** a uno de los estados base (|0⟩ o |1⟩) con p
 """,
         "sidebar_settings": "⚙️ إعدادات المحاكاة",
         "num_qubits_label": "عدد البتات الكمية:",
-        "num_qubits_help": "اختر عدد البتات الكمية للنظام الكمي (1-3 بتات كمية)",
+        "num_qubits_help": "اختر عدد البتات الكمية للنظام الكمي (1-{max_qubits} بتات كمية)",
         "add_gate_header": "🎛️ إضافة بوابة كمية",
         "select_gate": "اختر البوابة:",
         "select_gate_help": "اختر البوابة الكمية المراد تطبيقها",
@@ -439,7 +439,7 @@ Al medirse, un qubit **colapsa** a uno de los estados base (|0⟩ o |1⟩) con p
         "measurement_result_label": "نتيجة القياس",
         "frequency_label": "التردد (من {shots} طلقة)",
         "histogram_title": "مخطط القياس ({shots} طلقة)",
-        "footer": "⚛️ تم الإنشاء بواسطة Rasidi باستخدام Streamlit و NumPy | محاكي الحوسبة الكمية v1.0",
+        "footer": "⚛️ تم الإنشاء بواسطة Rasidi باستخدام Streamlit و NumPy | محاكي الحوسبة الكمية v2.0",
         "gate_hadamard_desc": "ينشئ تراكبًا: يحول |0⟩ → (|0⟩ + |1⟩)/√2 و|1⟩ → (|0⟩ - |1⟩)/√2",
         "gate_pauli_x_desc": "قلب البت: يبدل |0⟩ ↔ |1⟩ (مثل بوابة NOT الكلاسيكية)",
         "gate_pauli_y_desc": "دوران π راديان على محور Y في كرة بلوخ",
@@ -472,7 +472,7 @@ Lors de la mesure, un qubit **s'effondre** vers l'un des états de base (|0⟩ o
 """,
         "sidebar_settings": "⚙️ Paramètres de Simulation",
         "num_qubits_label": "Nombre de Qubits :",
-        "num_qubits_help": "Sélectionnez le nombre de qubits pour le système quantique (1-3 qubits)",
+        "num_qubits_help": "Sélectionnez le nombre de qubits pour le système quantique (1-{max_qubits} qubits)",
         "add_gate_header": "🎛️ Ajouter une Porte Quantique",
         "select_gate": "Sélectionner la Porte :",
         "select_gate_help": "Sélectionnez la porte quantique à appliquer",
@@ -509,7 +509,7 @@ Lors de la mesure, un qubit **s'effondre** vers l'un des états de base (|0⟩ o
         "measurement_result_label": "Résultat de Mesure",
         "frequency_label": "Fréquence ({shots} tirs)",
         "histogram_title": "Histogramme de Mesure ({shots} Tirs)",
-        "footer": "⚛️ Créé avec Rasidi en utilisant Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Créé avec Rasidi en utilisant Streamlit & NumPy | Quantum Computing Simulator v2.0",
         "gate_hadamard_desc": "Crée une superposition : transforme |0⟩ → (|0⟩ + |1⟩)/√2 et |1⟩ → (|0⟩ - |1⟩)/√2",
         "gate_pauli_x_desc": "Inversion de bit : échange |0⟩ ↔ |1⟩ (comme la porte NOT classique)",
         "gate_pauli_y_desc": "Rotation de π radians sur l'axe Y de la sphère de Bloch",
@@ -542,7 +542,7 @@ Lors de la mesure, un qubit **s'effondre** vers l'un des états de base (|0⟩ o
 """,
         "sidebar_settings": "⚙️ シミュレーション設定",
         "num_qubits_label": "量子ビット数：",
-        "num_qubits_help": "量子システムの量子ビット数を選択（1-3量子ビット）",
+        "num_qubits_help": "量子システムの量子ビット数を選択（1-{max_qubits}量子ビット）",
         "add_gate_header": "🎛️ 量子ゲートを追加",
         "select_gate": "ゲートを選択：",
         "select_gate_help": "適用する量子ゲートを選択",
@@ -579,7 +579,7 @@ Lors de la mesure, un qubit **s'effondre** vers l'un des états de base (|0⟩ o
         "measurement_result_label": "測定結果",
         "frequency_label": "頻度（{shots}ショット）",
         "histogram_title": "測定ヒストグラム（{shots}ショット）",
-        "footer": "⚛️ RasidiによりStreamlitとNumPyを使用して作成 | 量子コンピューティングシミュレーター v1.0",
+        "footer": "⚛️ RasidiによりStreamlitとNumPyを使用して作成 | 量子コンピューティングシミュレーター v2.0",
         "gate_hadamard_desc": "重ね合わせを作成：|0⟩ → (|0⟩ + |1⟩)/√2 および |1⟩ → (|0⟩ - |1⟩)/√2 に変換",
         "gate_pauli_x_desc": "ビット反転：|0⟩ ↔ |1⟩ を交換（古典NOTゲートと同様）",
         "gate_pauli_y_desc": "ブロッホ球のY軸上でπラジアン回転",
@@ -612,7 +612,7 @@ Lors de la mesure, un qubit **s'effondre** vers l'un des états de base (|0⟩ o
 """,
         "sidebar_settings": "⚙️ 시뮬레이션 설정",
         "num_qubits_label": "큐비트 수:",
-        "num_qubits_help": "양자 시스템의 큐비트 수를 선택하세요 (1-3 큐비트)",
+        "num_qubits_help": "양자 시스템의 큐비트 수를 선택하세요 (1-{max_qubits} 큐비트)",
         "add_gate_header": "🎛️ 양자 게이트 추가",
         "select_gate": "게이트 선택:",
         "select_gate_help": "적용할 양자 게이트를 선택하세요",
@@ -649,7 +649,7 @@ Lors de la mesure, un qubit **s'effondre** vers l'un des états de base (|0⟩ o
         "measurement_result_label": "측정 결과",
         "frequency_label": "빈도 ({shots}회 측정)",
         "histogram_title": "측정 히스토그램 ({shots}회 측정)",
-        "footer": "⚛️ Rasidi가 Streamlit & NumPy를 사용하여 제작 | 양자 컴퓨팅 시뮬레이터 v1.0",
+        "footer": "⚛️ Rasidi가 Streamlit & NumPy를 사용하여 제작 | 양자 컴퓨팅 시뮬레이터 v2.0",
         "gate_hadamard_desc": "중첩 생성: |0⟩ → (|0⟩ + |1⟩)/√2 및 |1⟩ → (|0⟩ - |1⟩)/√2로 변환",
         "gate_pauli_x_desc": "비트 반전: |0⟩ ↔ |1⟩ 교환 (고전 NOT 게이트와 유사)",
         "gate_pauli_y_desc": "블로흐 구의 Y축에서 π 라디안 회전",
@@ -682,7 +682,7 @@ Bei der Messung **kollabiert** ein Qubit in einen der Basiszustände (|0⟩ oder
 """,
         "sidebar_settings": "⚙️ Simulationseinstellungen",
         "num_qubits_label": "Anzahl der Qubits:",
-        "num_qubits_help": "Wählen Sie die Anzahl der Qubits für das Quantensystem (1-3 Qubits)",
+        "num_qubits_help": "Wählen Sie die Anzahl der Qubits für das Quantensystem (1-{max_qubits} Qubits)",
         "add_gate_header": "🎛️ Quantengatter hinzufügen",
         "select_gate": "Gatter auswählen:",
         "select_gate_help": "Wählen Sie das anzuwendende Quantengatter",
@@ -719,7 +719,7 @@ Bei der Messung **kollabiert** ein Qubit in einen der Basiszustände (|0⟩ oder
         "measurement_result_label": "Messergebnis",
         "frequency_label": "Häufigkeit ({shots} Schüsse)",
         "histogram_title": "Messhistogramm ({shots} Schüsse)",
-        "footer": "⚛️ Erstellt mit Rasidi unter Verwendung von Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Erstellt mit Rasidi unter Verwendung von Streamlit & NumPy | Quantum Computing Simulator v2.0",
         "gate_hadamard_desc": "Erzeugt Superposition: transformiert |0⟩ → (|0⟩ + |1⟩)/√2 und |1⟩ → (|0⟩ - |1⟩)/√2",
         "gate_pauli_x_desc": "Bit-Umkehrung: tauscht |0⟩ ↔ |1⟩ (wie klassisches NOT-Gatter)",
         "gate_pauli_y_desc": "Rotation um π Radiant auf der Y-Achse der Bloch-Kugel",
@@ -752,7 +752,7 @@ Quando medido, um qubit **colapsa** para um dos estados base (|0⟩ ou |1⟩) co
 """,
         "sidebar_settings": "⚙️ Configurações de Simulação",
         "num_qubits_label": "Número de Qubits:",
-        "num_qubits_help": "Selecione o número de qubits para o sistema quântico (1-3 qubits)",
+        "num_qubits_help": "Selecione o número de qubits para o sistema quântico (1-{max_qubits} qubits)",
         "add_gate_header": "🎛️ Adicionar Porta Quântica",
         "select_gate": "Selecionar Porta:",
         "select_gate_help": "Selecione a porta quântica a ser aplicada",
@@ -789,7 +789,7 @@ Quando medido, um qubit **colapsa** para um dos estados base (|0⟩ ou |1⟩) co
         "measurement_result_label": "Resultado da Medição",
         "frequency_label": "Frequência ({shots} disparos)",
         "histogram_title": "Histograma de Medição ({shots} Disparos)",
-        "footer": "⚛️ Criado com Rasidi usando Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Criado com Rasidi usando Streamlit & NumPy | Quantum Computing Simulator v2.0",
         "gate_hadamard_desc": "Cria superposição: transforma |0⟩ → (|0⟩ + |1⟩)/√2 e |1⟩ → (|0⟩ - |1⟩)/√2",
         "gate_pauli_x_desc": "Inversão de bit: troca |0⟩ ↔ |1⟩ (como porta NOT clássica)",
         "gate_pauli_y_desc": "Rotação de π radianos no eixo Y da esfera de Bloch",
@@ -822,7 +822,7 @@ Quando medido, um qubit **colapsa** para um dos estados base (|0⟩ ou |1⟩) co
 """,
         "sidebar_settings": "⚙️ Настройки симуляции",
         "num_qubits_label": "Количество кубитов:",
-        "num_qubits_help": "Выберите количество кубитов для квантовой системы (1-3 кубита)",
+        "num_qubits_help": "Выберите количество кубитов для квантовой системы (1-{max_qubits} кубита)",
         "add_gate_header": "🎛️ Добавить квантовый вентиль",
         "select_gate": "Выбрать вентиль:",
         "select_gate_help": "Выберите квантовый вентиль для применения",
@@ -859,7 +859,7 @@ Quando medido, um qubit **colapsa** para um dos estados base (|0⟩ ou |1⟩) co
         "measurement_result_label": "Результат измерения",
         "frequency_label": "Частота ({shots} выстрелов)",
         "histogram_title": "Гистограмма измерений ({shots} выстрелов)",
-        "footer": "⚛️ Создано Rasidi с использованием Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Создано Rasidi с использованием Streamlit & NumPy | Quantum Computing Simulator v2.0",
         "gate_hadamard_desc": "Создаёт суперпозицию: преобразует |0⟩ → (|0⟩ + |1⟩)/√2 и |1⟩ → (|0⟩ - |1⟩)/√2",
         "gate_pauli_x_desc": "Инверсия бита: меняет |0⟩ ↔ |1⟩ (как классический элемент NOT)",
         "gate_pauli_y_desc": "Вращение на π радиан по оси Y сферы Блоха",
@@ -892,7 +892,7 @@ Quando medido, um qubit **colapsa** para um dos estados base (|0⟩ ou |1⟩) co
 """,
         "sidebar_settings": "⚙️ सिमुलेशन सेटिंग्स",
         "num_qubits_label": "क्यूबिट्स की संख्या:",
-        "num_qubits_help": "क्वांटम सिस्टम के लिए क्यूबिट्स की संख्या चुनें (1-3 क्यूबिट)",
+        "num_qubits_help": "क्वांटम सिस्टम के लिए क्यूबिट्स की संख्या चुनें (1-{max_qubits} क्यूबिट)",
         "add_gate_header": "🎛️ क्वांटम गेट जोड़ें",
         "select_gate": "गेट चुनें:",
         "select_gate_help": "लागू करने के लिए क्वांटम गेट चुनें",
@@ -929,7 +929,7 @@ Quando medido, um qubit **colapsa** para um dos estados base (|0⟩ ou |1⟩) co
         "measurement_result_label": "मापन परिणाम",
         "frequency_label": "आवृत्ति ({shots} शॉट्स)",
         "histogram_title": "मापन हिस्टोग्राम ({shots} शॉट्स)",
-        "footer": "⚛️ Rasidi द्वारा Streamlit और NumPy का उपयोग करके बनाया गया | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Rasidi द्वारा Streamlit और NumPy का उपयोग करके बनाया गया | Quantum Computing Simulator v2.0",
         "gate_hadamard_desc": "सुपरपोजिशन बनाता है: |0⟩ → (|0⟩ + |1⟩)/√2 और |1⟩ → (|0⟩ - |1⟩)/√2 में रूपांतरित करता है",
         "gate_pauli_x_desc": "बिट फ्लिप: |0⟩ ↔ |1⟩ को बदलता है (शास्त्रीय NOT गेट की तरह)",
         "gate_pauli_y_desc": "ब्लॉख गोले के Y अक्ष पर π रेडियन का घूर्णन",
@@ -962,7 +962,7 @@ Klasik bitlerden (0 veya 1) farklı olarak, **kübitler** her iki durumun **süp
 """,
         "sidebar_settings": "⚙️ Simülasyon Ayarları",
         "num_qubits_label": "Kübit Sayısı:",
-        "num_qubits_help": "Kuantum sistemi için kübit sayısını seçin (1-3 kübit)",
+        "num_qubits_help": "Kuantum sistemi için kübit sayısını seçin (1-{max_qubits} kübit)",
         "add_gate_header": "🎛️ Kuantum Kapısı Ekle",
         "select_gate": "Kapı Seçin:",
         "select_gate_help": "Uygulanacak kuantum kapısını seçin",
@@ -999,7 +999,7 @@ Klasik bitlerden (0 veya 1) farklı olarak, **kübitler** her iki durumun **süp
         "measurement_result_label": "Ölçüm Sonucu",
         "frequency_label": "Frekans ({shots} atış)",
         "histogram_title": "Ölçüm Histogramı ({shots} Atış)",
-        "footer": "⚛️ Rasidi tarafından Streamlit & NumPy kullanılarak oluşturuldu | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Rasidi tarafından Streamlit & NumPy kullanılarak oluşturuldu | Quantum Computing Simulator v2.0",
         "gate_hadamard_desc": "Süperpozisyon oluşturur: |0⟩ → (|0⟩ + |1⟩)/√2 ve |1⟩ → (|0⟩ - |1⟩)/√2'ye dönüştürür",
         "gate_pauli_x_desc": "Bit çevirme: |0⟩ ↔ |1⟩ değiştirir (klasik NOT kapısı gibi)",
         "gate_pauli_y_desc": "Bloch küresinin Y ekseni üzerinde π radyan döndürme",
@@ -1032,7 +1032,7 @@ Quando misurato, un qubit **collassa** in uno degli stati base (|0⟩ o |1⟩) c
 """,
         "sidebar_settings": "⚙️ Impostazioni di Simulazione",
         "num_qubits_label": "Numero di Qubit:",
-        "num_qubits_help": "Seleziona il numero di qubit per il sistema quantistico (1-3 qubit)",
+        "num_qubits_help": "Seleziona il numero di qubit per il sistema quantistico (1-{max_qubits} qubit)",
         "add_gate_header": "🎛️ Aggiungi Porta Quantistica",
         "select_gate": "Seleziona Porta:",
         "select_gate_help": "Seleziona la porta quantistica da applicare",
@@ -1069,7 +1069,7 @@ Quando misurato, un qubit **collassa** in uno degli stati base (|0⟩ o |1⟩) c
         "measurement_result_label": "Risultato della Misurazione",
         "frequency_label": "Frequenza ({shots} colpi)",
         "histogram_title": "Istogramma di Misurazione ({shots} Colpi)",
-        "footer": "⚛️ Creato con Rasidi usando Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Creato con Rasidi usando Streamlit & NumPy | Quantum Computing Simulator v2.0",
         "gate_hadamard_desc": "Crea sovrapposizione: trasforma |0⟩ → (|0⟩ + |1⟩)/√2 e |1⟩ → (|0⟩ - |1⟩)/√2",
         "gate_pauli_x_desc": "Inversione di bit: scambia |0⟩ ↔ |1⟩ (come porta NOT classica)",
         "gate_pauli_y_desc": "Rotazione di π radianti sull'asse Y della sfera di Bloch",
@@ -1102,7 +1102,7 @@ Khi đo, một qubit **sụp đổ** về một trong các trạng thái cơ s�
 """,
         "sidebar_settings": "⚙️ Cài đặt Mô phỏng",
         "num_qubits_label": "Số lượng Qubit:",
-        "num_qubits_help": "Chọn số lượng qubit cho hệ thống lượng tử (1-3 qubit)",
+        "num_qubits_help": "Chọn số lượng qubit cho hệ thống lượng tử (1-{max_qubits} qubit)",
         "add_gate_header": "🎛️ Thêm Cổng Lượng tử",
         "select_gate": "Chọn Cổng:",
         "select_gate_help": "Chọn cổng lượng tử để áp dụng",
@@ -1139,7 +1139,7 @@ Khi đo, một qubit **sụp đổ** về một trong các trạng thái cơ s�
         "measurement_result_label": "Kết quả Đo lường",
         "frequency_label": "Tần suất ({shots} lần bắn)",
         "histogram_title": "Biểu đồ Đo lường ({shots} Lần bắn)",
-        "footer": "⚛️ Được tạo bởi Rasidi sử dụng Streamlit & NumPy | Quantum Computing Simulator v1.0",
+        "footer": "⚛️ Được tạo bởi Rasidi sử dụng Streamlit & NumPy | Quantum Computing Simulator v2.0",
         "gate_hadamard_desc": "Tạo chồng chất: biến đổi |0⟩ → (|0⟩ + |1⟩)/√2 và |1⟩ → (|0⟩ - |1⟩)/√2",
         "gate_pauli_x_desc": "Đảo bit: hoán đổi |0⟩ ↔ |1⟩ (như cổng NOT cổ điển)",
         "gate_pauli_y_desc": "Quay π radian trên trục Y của cầu Bloch",
@@ -1151,6 +1151,13 @@ Khi đo, một qubit **sụp đổ** về một trong các trạng thái cơ s�
 }
 
 # Available languages for the selector
+# Strings added in Mini Quantum Lab 2.0 live in translations_extra.py.
+from translations_extra import EXTRA_TRANSLATIONS
+
+for _lang, _table in EXTRA_TRANSLATIONS.items():
+    TRANSLATIONS[_lang].update(_table)
+del _lang, _table
+
 AVAILABLE_LANGUAGES = ["English", "Indonesia", "Español", "中文", "العربية", "Français", "日本語", "한국어", "Deutsch", "Português", "Русский", "हिन्दी", "Türkçe", "Italiano", "Tiếng Việt"]
 
 def get_text(lang, key, **kwargs):
@@ -1181,6 +1188,7 @@ def get_gate_description(lang, gate_name):
         "Pauli-Z": "gate_pauli_z_desc",
         "S Gate": "gate_s_desc",
         "T Gate": "gate_t_desc",
+        "Identity (I)": "gate_identity_desc",
     }
     
     key = gate_desc_map.get(gate_name, "")

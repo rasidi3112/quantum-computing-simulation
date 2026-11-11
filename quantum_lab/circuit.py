@@ -5,8 +5,8 @@ Qubit 0 is the top wire of a diagram and the leftmost bit of a basis label.
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
-from typing import Mapping, Sequence
 
 import numpy as np
 
@@ -69,7 +69,7 @@ class RunResult:
 
     simulator: QuantumSimulator
     outcomes: dict[int, int]  #: last measurement result per measured qubit
-    circuit: "Circuit"  #: executed circuit with measurement outcomes recorded
+    circuit: Circuit  #: executed circuit with measurement outcomes recorded
 
 
 class Circuit:
@@ -88,11 +88,11 @@ class Circuit:
     def __iter__(self):
         return iter(self.ops)
 
-    def copy(self) -> "Circuit":
+    def copy(self) -> Circuit:
         return Circuit(self.num_qubits, self.ops)
 
     # ------------------------------------------------------------- building
-    def append(self, op: Operation) -> "Circuit":
+    def append(self, op: Operation) -> Circuit:
         """Validate and add an operation."""
         gates.validate_qubits(op.qubits, self.num_qubits)
         if op.condition is not None:
@@ -127,19 +127,19 @@ class Circuit:
         controls: Sequence[int] = (),
         params: Sequence[float] = (),
         condition: int | None = None,
-    ) -> "Circuit":
+    ) -> Circuit:
         return self.append(
             Operation(GATE, name, (target,), tuple(controls),
                       tuple(float(p) for p in params), condition)
         )
 
-    def cnot(self, control: int, target: int) -> "Circuit":
+    def cnot(self, control: int, target: int) -> Circuit:
         return self.gate("X", target, controls=[control])
 
-    def measure(self, qubit: int, outcome: int | None = None) -> "Circuit":
+    def measure(self, qubit: int, outcome: int | None = None) -> Circuit:
         return self.append(Operation(MEASURE, "M", (qubit,), outcome=outcome))
 
-    def unitary(self, name: str, qubits: Sequence[int], matrix: np.ndarray) -> "Circuit":
+    def unitary(self, name: str, qubits: Sequence[int], matrix: np.ndarray) -> Circuit:
         m = np.array(matrix, dtype=complex)
         m.setflags(write=False)
         return self.append(Operation(UNITARY, name, tuple(qubits), matrix=m))

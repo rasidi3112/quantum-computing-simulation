@@ -7,7 +7,7 @@ lower ``MAX_DENSITY_QUBITS``.  Indices are big-endian like everywhere else.
 
 from __future__ import annotations
 
-from typing import Sequence
+from collections.abc import Sequence
 
 import numpy as np
 
@@ -42,7 +42,7 @@ class DensityMatrix:
         self._rho[0, 0] = 1.0
 
     @classmethod
-    def from_statevector(cls, state: np.ndarray) -> "DensityMatrix":
+    def from_statevector(cls, state: np.ndarray) -> DensityMatrix:
         vec = np.asarray(state, dtype=complex).reshape(-1)
         n = int(vec.shape[0]).bit_length() - 1
         out = cls(n)
@@ -54,7 +54,7 @@ class DensityMatrix:
         return out
 
     @classmethod
-    def from_matrix(cls, rho: np.ndarray, num_qubits: int) -> "DensityMatrix":
+    def from_matrix(cls, rho: np.ndarray, num_qubits: int) -> DensityMatrix:
         """Wrap an existing matrix (used for ensemble sums); shape-checked only."""
         out = cls(num_qubits)
         rho = np.array(rho, dtype=complex)
@@ -68,7 +68,7 @@ class DensityMatrix:
         """Copy of ``rho``."""
         return self._rho.copy()
 
-    def copy(self) -> "DensityMatrix":
+    def copy(self) -> DensityMatrix:
         return DensityMatrix.from_matrix(self._rho, self.num_qubits)
 
     # ------------------------------------------------------------ evolution
@@ -152,7 +152,7 @@ class DensityMatrix:
         vec = np.asarray(state, dtype=complex).reshape(-1)
         return float(np.vdot(vec, self._rho @ vec).real)
 
-    def fidelity(self, other: "DensityMatrix") -> float:
+    def fidelity(self, other: DensityMatrix) -> float:
         """Uhlmann fidelity ``(Tr sqrt(sqrt(rho) sigma sqrt(rho)))^2`` in [0, 1]."""
         if other.num_qubits != self.num_qubits:
             raise ValueError("density matrices must have the same number of qubits")

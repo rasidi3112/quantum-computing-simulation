@@ -6,8 +6,8 @@ simulator; the reported probabilities are read from the simulated state.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Sequence
 
 import numpy as np
 

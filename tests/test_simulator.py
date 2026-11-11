@@ -261,7 +261,7 @@ def test_bell_state_generation():
     sim = run(2, ("H", 0), ("CNOT", 0, 1))
     expected = (basis("00") + basis("11")) / SQRT2
     assert np.allclose(sim.state, expected, atol=TOL)
-    p = dict(zip(["00", "01", "10", "11"], sim.get_probabilities()))
+    p = dict(zip(["00", "01", "10", "11"], sim.get_probabilities(), strict=True))
     assert p["00"] == pytest.approx(0.5, abs=TOL)
     assert p["11"] == pytest.approx(0.5, abs=TOL)
     assert p["01"] == pytest.approx(0.0, abs=TOL)

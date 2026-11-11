@@ -13,7 +13,7 @@ The state of ``n`` qubits is a vector of ``2**n`` complex128 amplitudes, i.e.
 
 from __future__ import annotations
 
-from typing import Iterable, Sequence
+from collections.abc import Iterable, Sequence
 
 import numpy as np
 
@@ -104,7 +104,7 @@ class QuantumSimulator:
         self._state = np.zeros(self.dim, dtype=complex)
         self._state[0] = 1.0
 
-    def copy(self) -> "QuantumSimulator":
+    def copy(self) -> QuantumSimulator:
         other = QuantumSimulator(self.num_qubits)
         other._state = self._state.copy()
         return other

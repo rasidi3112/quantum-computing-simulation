@@ -29,7 +29,7 @@ def test_probabilities_follow_born_rule_and_sum_to_one():
 
 
 def test_bell_state_measurement_probabilities():
-    p = dict(zip(["00", "01", "10", "11"], bell().get_probabilities()))
+    p = dict(zip(["00", "01", "10", "11"], bell().get_probabilities(), strict=True))
     assert p == pytest.approx({"00": 0.5, "01": 0.0, "10": 0.0, "11": 0.5}, abs=TOL)
 
 

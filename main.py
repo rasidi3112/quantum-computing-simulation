@@ -475,7 +475,9 @@ def render_bell():
         st.markdown(f"{t('current_state')}\n\n`|{kind}⟩ = {ket_string(sim.state)}`")
         st.metric(t("entropy_label"), f"{states.entanglement_entropy(sim.state, [0]):.3f}")
         lengths = [np.linalg.norm(states.qubit_bloch_vector(sim.state, q)) for q in (0, 1)]
-        st.metric(t("bloch_length"), " · ".join(f"Q{q}: {r:.3f}" for q, r in enumerate(lengths)))
+        col_q0, col_q1 = st.columns(2)
+        for column, (qubit, length) in zip((col_q0, col_q1), enumerate(lengths), strict=True):
+            column.metric(f"{t('bloch_length')} · Q{qubit}", f"{length:.3f}")
 
     st.info(t("bell_explain"))
     for outcome in (0, 1):

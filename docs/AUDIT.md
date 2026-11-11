@@ -245,3 +245,44 @@ vector before sampling.
 | 6 | Bell/teleportation demos, noise channels, Grover and Deutsch–Jozsa | new features |
 | 7 | Streamlit interface on top of the modules, translations for all 15 languages | S2, U2, I1 |
 | 8 | Dependencies, README, repository hygiene | D1–D3 |
+
+---
+
+## 11. Resolution status in version 2.0
+
+Added after the work was completed. "Test" names the test module that guards
+the fix; all 500 tests pass (see the README for the verified environments).
+
+| ID | Status | How | Test |
+|----|--------|-----|------|
+| Q1 | Fixed | Big-endian ordering in every module; CNOT reimplemented | `test_simulator.py`, `test_gates.py` |
+| Q2 | Fixed | Unitarity is validated; no renormalisation during unitary evolution | `test_simulator.py` |
+| Q3 | Fixed | `control == target` raises `ValueError` | `test_simulator.py` |
+| Q4 | Fixed | Qubit indices are validated | `test_gates.py`, `test_simulator.py` |
+| Q5 | Fixed | `get_amplitudes()` returns a copy; `state` is a read-only view | `test_simulator.py` |
+| M1 | Fixed | Sampling on demand, seeded, stored in session state | `test_measurement.py`, `test_app.py` |
+| M2 | Fixed | `measure_qubit`, `measure_all`, `project` with collapse | `test_measurement.py`, `test_app.py` |
+| M3 | Fixed | Probability vector is checked and normalised before sampling | `test_measurement.py` |
+| U1 | Fixed | Plotly charts; text is rendered by the browser | checked visually in Japanese and Arabic |
+| U2 | Fixed | One-shot messages drawn after the callback | `test_app.py` |
+| U3 | Fixed | Text circuit diagram | `test_circuit.py` |
+| U4 | Fixed | Phase plot | `test_visualization.py` |
+| U5 | Fixed | One colour per series; emphasis only where the chart is about one bar | `test_visualization.py` |
+| S1 | Fixed | One structured `Circuit` in session state | `test_app.py` |
+| S2 | Fixed | Language selector bound to session state by key | `test_app.py` |
+| P1 | Fixed | Tensor contraction, O(2ⁿ) per gate | `benchmarks/bench_gates.py` |
+| D1 | Fixed | `qiskit` and `matplotlib` removed, `plotly` added, lower bounds tested | — |
+| D2 | Fixed | README rewritten | — |
+| D3 | Fixed | Placeholder removed, `.gitignore` cleaned | — |
+| C1 | Documented | Dev-container flags left as they are (Codespaces needs them); warning added to the README | — |
+| T1 | Fixed | pytest suite | — |
+| I1 | Fixed | Range is a `{max_qubits}` placeholder | `test_translations.py` |
+
+Found while doing the work, not in the original audit:
+
+- **U6 (Low, reproduced).** The language selector was created with an empty
+  label, for which Streamlit logs an accessibility warning on every run
+  ("`label` got an empty value"). It now has a label that is hidden visually.
+- The headless test harness calls a select box's `format_func` outside the
+  script thread, so label functions must not read session state. One did
+  during development and was changed to a plain dictionary lookup.

@@ -1,9 +1,3 @@
-"""Educational quantum algorithms: Grover search and Deutsch-Jozsa.
-
-Both are built from gate-level circuits and executed on the state-vector
-simulator; the reported probabilities are read from the simulated state.
-"""
-
 from __future__ import annotations
 
 from collections.abc import Sequence
@@ -28,40 +22,23 @@ def _check_grover(num_qubits: int, marked: int) -> None:
 
 
 def grover_angle(num_qubits: int) -> float:
-    """``theta = arcsin(1/sqrt(N))`` for one marked item among ``N = 2**n``."""
     return float(np.arcsin(1.0 / np.sqrt(2**num_qubits)))
 
 
 def grover_optimal_iterations(num_qubits: int) -> int:
-    """Number of Grover iterations maximising the success probability.
-
-    After ``k`` iterations ``P = sin^2((2k+1) theta)``, maximal at
-    ``k = floor(pi / (4 theta))``.
-    """
     return int(np.floor(np.pi / (4 * grover_angle(num_qubits))))
 
 
 def grover_theoretical_probability(num_qubits: int, iterations: int) -> float:
-    """Closed-form success probability ``sin^2((2k+1) theta)``."""
     return float(np.sin((2 * iterations + 1) * grover_angle(num_qubits)) ** 2)
 
 
 def _phase_flip_all_ones(circuit: Circuit) -> None:
-    """Multi-controlled Z: multiplies ``|1...1>`` by -1."""
     n = circuit.num_qubits
     circuit.gate("Z", n - 1, controls=list(range(n - 1)))
 
 
 def grover_circuit(num_qubits: int, marked: int, iterations: int) -> Circuit:
-    """Grover search for the basis state ``marked`` (big-endian index).
-
-    Each iteration is
-
-    * oracle ``O = I - 2|w><w|``: ``X`` on every qubit whose bit of ``w`` is
-      0, a multi-controlled ``Z``, and the same ``X`` gates again;
-    * diffusion ``H^n X^n (MCZ) X^n H^n = -(2|s><s| - I)``, the inversion
-      about the mean up to an unobservable global phase.
-    """
     _check_grover(num_qubits, marked)
     if iterations < 0:
         raise ValueError("iterations must be non-negative")
@@ -87,7 +64,6 @@ def grover_circuit(num_qubits: int, marked: int, iterations: int) -> Circuit:
 
 
 def grover_success_probabilities(num_qubits: int, marked: int, max_iterations: int) -> list[float]:
-    """Simulated ``P(marked)`` after ``0, 1, ..., max_iterations`` iterations."""
     _check_grover(num_qubits, marked)
     return [
         float(grover_circuit(num_qubits, marked, k).run().simulator.get_probabilities()[marked])
@@ -111,7 +87,6 @@ def _check_table(truth_table: Sequence[int]) -> tuple[np.ndarray, int]:
 
 
 def classify_function(truth_table: Sequence[int]) -> str:
-    """``"constant"``, ``"balanced"`` or ``"neither"`` for ``f: {0,1}^n -> {0,1}``."""
     table, _ = _check_table(truth_table)
     ones = int(table.sum())
     if ones in (0, table.size):
@@ -122,7 +97,6 @@ def classify_function(truth_table: Sequence[int]) -> str:
 
 
 def constant_oracle(num_inputs: int, value: int) -> list[int]:
-    """Truth table of ``f(x) = value``."""
     if value not in (0, 1):
         raise ValueError("value must be 0 or 1")
     if num_inputs < 1:
@@ -131,11 +105,6 @@ def constant_oracle(num_inputs: int, value: int) -> list[int]:
 
 
 def parity_oracle(num_inputs: int, mask: int, flip: bool = False) -> list[int]:
-    """Truth table of ``f(x) = (mask . x) mod 2 (XOR 1 if flip)``.
-
-    Balanced for every non-zero ``mask``; ``x`` and ``mask`` are big-endian
-    bit strings (bit 0 = input qubit 0).
-    """
     if num_inputs < 1:
         raise ValueError("num_inputs must be at least 1")
     if not 0 < mask < 2**num_inputs:
@@ -144,7 +113,6 @@ def parity_oracle(num_inputs: int, mask: int, flip: bool = False) -> list[int]:
 
 
 def random_balanced_oracle(num_inputs: int, rng=None) -> list[int]:
-    """Uniformly random balanced truth table (reproducible with a seed)."""
     if num_inputs < 1:
         raise ValueError("num_inputs must be at least 1")
     size = 2**num_inputs
@@ -154,11 +122,6 @@ def random_balanced_oracle(num_inputs: int, rng=None) -> list[int]:
 
 
 def oracle_matrix(truth_table: Sequence[int]) -> np.ndarray:
-    """Unitary ``U_f |x>|y> = |x>|y XOR f(x)>`` on ``n + 1`` qubits.
-
-    The ancilla ``y`` is the last qubit, i.e. the least significant bit of
-    the index.  ``U_f`` is a permutation matrix, hence unitary for every ``f``.
-    """
     table, n = _check_table(truth_table)
     dim = 2 ** (n + 1)
     matrix = np.zeros((dim, dim), dtype=complex)
@@ -169,7 +132,6 @@ def oracle_matrix(truth_table: Sequence[int]) -> np.ndarray:
 
 
 def deutsch_jozsa_circuit(truth_table: Sequence[int]) -> Circuit:
-    """``n`` input qubits (q0..q(n-1)) plus one ancilla (qn) prepared in ``|->``."""
     _, n = _check_table(truth_table)
     circuit = Circuit(n + 1).gate("X", n)
     for q in range(n + 1):
@@ -192,14 +154,6 @@ class DeutschJozsaResult:
 
 
 def run_deutsch_jozsa(truth_table: Sequence[int]) -> DeutschJozsaResult:
-    """Decide constant vs balanced with a single oracle query.
-
-    The input register reads ``0...0`` with probability
-    ``|2^-n sum_x (-1)^f(x)|^2``: exactly 1 for a constant function and
-    exactly 0 for a balanced one.  If the promise is violated
-    (``function_type == "neither"``) the probability lies strictly between and
-    the verdict is not reliable.
-    """
     table, n = _check_table(truth_table)
     circuit = deutsch_jozsa_circuit(table)
     sim = circuit.run().simulator

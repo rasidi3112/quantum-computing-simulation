@@ -1,5 +1,3 @@
-"""Plotly figure builders: structure and data fidelity (no rendering needed)."""
-
 import numpy as np
 import pytest
 

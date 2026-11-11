@@ -1,5 +1,3 @@
-"""Grover search and Deutsch-Jozsa."""
-
 import itertools
 
 import numpy as np

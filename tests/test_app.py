@@ -1,5 +1,3 @@
-"""End-to-end checks of the Streamlit interface with ``streamlit.testing``."""
-
 from pathlib import Path
 
 import numpy as np
@@ -19,7 +17,6 @@ def fresh() -> AppTest:
 
 
 def select(at, label):
-    """Selectbox with the given (English) label; the last one wins (sidebar)."""
     matches = [box for box in at.selectbox if box.label == label]
     assert matches, f"no selectbox labelled {label!r}"
     return matches[-1]
@@ -54,15 +51,14 @@ def state(at):
 
 
 def shows(elements, text):
-    """True if an alert shows ``text`` (Streamlit moves a leading emoji to the icon)."""
     return any(el.value.strip() and el.value.strip() in text for el in elements)
 
 
 def test_initial_page():
     at = fresh()
     assert [tab.label for tab in at.tabs] == [
-        "🧪 Lab", "🌐 Bloch Sphere", "📏 Measurement", "🔗 Entanglement", "🌫️ Noise",
-        "🧠 Algorithms",
+        "Lab", "Bloch Sphere", "Measurement", "Entanglement", "Noise",
+        "Algorithms",
     ]
     assert np.allclose(state(at), [1, 0])
     assert not at.error and not at.warning

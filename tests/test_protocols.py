@@ -1,5 +1,3 @@
-"""Bell states, GHZ states and quantum teleportation."""
-
 import numpy as np
 import pytest
 

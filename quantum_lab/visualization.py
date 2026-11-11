@@ -1,15 +1,3 @@
-"""Plotly figures for the lab.
-
-Functions here take plain numbers plus already-translated label strings and
-return ``plotly.graph_objects.Figure`` objects; they know nothing about
-Streamlit or the translation tables.
-
-Colour is assigned by role, not by value: one series = one colour, two
-series = blue/orange (validated for colour-vision deficiency on light and
-dark surfaces).  Backgrounds are transparent so the host page's theme shows
-through.
-"""
-
 from __future__ import annotations
 
 from collections.abc import Sequence
@@ -24,8 +12,6 @@ PHASE_EPS = 1e-9
 
 @dataclass(frozen=True)
 class Palette:
-    """Colours for one surface (light or dark)."""
-
     series_1: str  # primary series
     series_2: str  # comparison series
     neutral: str  # de-emphasised marks, reference lines
@@ -39,12 +25,10 @@ DARK = Palette("#3987e5", "#d95926", "#5c5c58", "#d6d5cf", "#383835", "#9a9a94")
 
 
 def palette_for(base: str | None) -> Palette:
-    """``"dark"`` -> dark palette, anything else -> light palette."""
     return DARK if base == "dark" else LIGHT
 
 
 def ket_labels(labels: Sequence[str]) -> list[str]:
-    """``"01"`` -> ``"|01⟩"``."""
     return [f"|{label}⟩" for label in labels]
 
 
@@ -79,11 +63,6 @@ def probability_figure(
     palette: Palette = LIGHT,
     highlight: int | None = None,
 ) -> go.Figure:
-    """Bar chart of measurement probabilities.
-
-    With ``highlight`` set, that bar keeps the series colour and every other
-    bar is drawn neutral (used to point at Grover's marked state).
-    """
     probs = np.asarray(probs, dtype=float)
     kets = ket_labels(labels)
     colors: str | list[str] = palette.series_1
@@ -121,7 +100,6 @@ def amplitude_figure(
     imag_label: str,
     palette: Palette = LIGHT,
 ) -> go.Figure:
-    """Grouped bars: real and imaginary part of every amplitude."""
     amplitudes = np.asarray(amplitudes, dtype=complex)
     kets = ket_labels(labels)
     fig = go.Figure(
@@ -146,11 +124,6 @@ def phase_figure(
     x_title: str,
     palette: Palette = LIGHT,
 ) -> go.Figure:
-    """Phase ``arg(alpha)`` of every non-zero amplitude, in units of pi.
-
-    Basis states with (numerically) zero amplitude have no defined phase and
-    get no marker.  A stem joins each marker to the zero line.
-    """
     amplitudes = np.asarray(amplitudes, dtype=complex)
     kets = ket_labels(labels)
     magnitude = np.abs(amplitudes)
@@ -193,7 +166,6 @@ def histogram_figure(
     expected_label: str,
     palette: Palette = LIGHT,
 ) -> go.Figure:
-    """Measured shot counts (bars) against the expectation ``shots * P`` (ticks)."""
     counts = np.asarray(counts)
     expected = np.asarray(expected, dtype=float)
     shots = int(counts.sum())
@@ -236,7 +208,6 @@ def comparison_figure(
     second_label: str,
     palette: Palette = LIGHT,
 ) -> go.Figure:
-    """Two probability distributions side by side (e.g. ideal vs noisy)."""
     kets = ket_labels(labels)
     fig = go.Figure(
         [
@@ -268,7 +239,6 @@ def curve_figure(
     palette: Palette = LIGHT,
     marker_x: float | None = None,
 ) -> go.Figure:
-    """Simulated points on top of a closed-form curve (Grover success probability)."""
     fig = go.Figure(
         [
             go.Scatter(name=theory_label, x=list(theory_x), y=list(theory_y), mode="lines",
@@ -310,13 +280,6 @@ def bloch_figure(
     palette: Palette = LIGHT,
     height: int = 380,
 ) -> go.Figure:
-    """Interactive 3D Bloch sphere with one Bloch vector.
-
-    ``vector`` is ``(<X>, <Y>, <Z>)`` of a single-qubit (reduced) state.  Its
-    length is 1 for a pure state and below 1 for a mixed state; the arrow is
-    drawn at its true length, so a maximally mixed qubit shows only a dot at
-    the centre.  Axis ends are labelled with the six cardinal states.
-    """
     r = np.asarray(vector, dtype=float).reshape(-1)
     if r.shape != (3,) or not np.all(np.isfinite(r)):
         raise ValueError("Bloch vector must have three finite components")

@@ -1,5 +1,3 @@
-"""Gate matrices: definitions, unitarity and dense expansions."""
-
 import numpy as np
 import pytest
 

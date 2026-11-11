@@ -1,5 +1,3 @@
-"""Entanglement demonstrations: Bell states, GHZ states, quantum teleportation."""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -20,7 +18,6 @@ BELL_STATES: dict[str, tuple[int, int]] = {
 
 
 def bell_circuit(kind: str = "Φ+") -> Circuit:
-    """Two-qubit circuit preparing one of the four Bell states from ``|00>``."""
     if kind not in BELL_STATES:
         raise ValueError(f"unknown Bell state {kind!r}; expected one of {list(BELL_STATES)}")
     x, y = BELL_STATES[kind]
@@ -33,7 +30,6 @@ def bell_circuit(kind: str = "Φ+") -> Circuit:
 
 
 def ghz_circuit(num_qubits: int) -> Circuit:
-    """``(|0...0> + |1...1>)/sqrt(2)`` on ``num_qubits >= 2`` qubits."""
     if num_qubits < 2:
         raise ValueError("a GHZ state needs at least 2 qubits")
     circuit = Circuit(num_qubits).gate("H", 0)
@@ -43,17 +39,6 @@ def ghz_circuit(num_qubits: int) -> Circuit:
 
 
 def teleportation_circuit(theta: float, phi: float) -> Circuit:
-    """Standard three-qubit teleportation circuit.
-
-    * q0 — Alice's message qubit, prepared as
-      ``cos(theta/2)|0> + e^{i phi} sin(theta/2)|1>`` with ``RY(theta)``, ``P(phi)``;
-    * q1 — Alice's half of the Bell pair;
-    * q2 — Bob's half.
-
-    Alice performs a Bell-basis measurement (CNOT, H, measure q0 and q1) and
-    sends the two classical bits; Bob applies ``X`` if ``m1 = 1`` and then
-    ``Z`` if ``m0 = 1``.
-    """
     return (
         Circuit(3)
         .gate("RY", 0, params=[theta])
@@ -84,12 +69,6 @@ class TeleportationResult:
 def run_teleportation(
     theta: float, phi: float, rng=None, forced: dict[int, int] | None = None
 ) -> TeleportationResult:
-    """Simulate teleportation of ``cos(theta/2)|0> + e^{i phi} sin(theta/2)|1>``.
-
-    Nothing is hard-coded: the returned fidelity is computed from the
-    simulated final state.  ``forced`` (e.g. ``{0: 1, 1: 0}``) post-selects
-    Alice's outcomes so that all four branches can be inspected.
-    """
     if not (np.isfinite(theta) and np.isfinite(phi)):
         raise ValueError("theta and phi must be finite")
     message = bloch_state(theta, phi)

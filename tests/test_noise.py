@@ -1,5 +1,3 @@
-"""Density matrices and noise channels."""
-
 import itertools
 
 import numpy as np
@@ -180,7 +178,6 @@ def test_bell_state_under_phase_flip_matches_hand_calculation():
 
 @pytest.mark.parametrize("channel", noise.CHANNELS)
 def test_noisy_run_equals_exact_average_over_error_trajectories(channel):
-    """Density-matrix result == weighted sum over every Kraus trajectory."""
     p = 0.15
     circuit = Circuit(2).gate("H", 0).cnot(0, 1).gate("T", 1)
     kraus = noise.kraus_operators(channel, p)

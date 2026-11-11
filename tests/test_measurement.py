@@ -1,5 +1,3 @@
-"""Measurement engine: probabilities, shot sampling, projective collapse."""
-
 import numpy as np
 import pytest
 

@@ -22,20 +22,20 @@ Eksperimen 3: Phase Manipulation
 Pengembangan Lebih Lanjut
 Aplikasi ini dapat dikembangkan dengan:
 
-✨ Rotasi Gate (**Rx, Ry, Rz**) dengan parameter sudut  
-✨ **Bloch Sphere Visualization** untuk single qubit  
-✨ **Quantum Circuit Diagram** visual  
-✨ **Predefined Algorithms** (Grover, Deutsch-Jozsa)  
-✨ **Export ke Qiskit** untuk running pada real quantum hardware  
-✨ **Noise Model** untuk simulasi lebih realistis  
+Rotasi Gate (**Rx, Ry, Rz**) dengan parameter sudut  
+**Bloch Sphere Visualization** untuk single qubit  
+**Quantum Circuit Diagram** visual  
+**Predefined Algorithms** (Grover, Deutsch-Jozsa)  
+**Export ke Qiskit** untuk running pada real quantum hardware  
+**Noise Model** untuk simulasi lebih realistis  
 
 
-📚 Referensi & Resource
-📖 *Quantum Computing for Computer Scientists*  
-🌐 [Qiskit Documentation](https://qiskit.org/documentation/)  
-🎓 [IBM Quantum Learning](https://quantum-computing.ibm.com/learn)  
+Referensi & Resource
+*Quantum Computing for Computer Scientists*  
+[Qiskit Documentation](https://qiskit.org/documentation/)  
+[IBM Quantum Learning](https://quantum-computing.ibm.com/learn)  
 
 Tips:
 Gunakan aplikasi ini sebagai alat pembelajaran interaktif untuk memahami konsep dasar *quantum computing* sebelum beralih ke framework yang lebih advanced seperti **Qiskit** atau **Cirq**!
 
-Selamat bereksperimen dengan Quantum Computing! ⚛️✨**
+Selamat bereksperimen dengan Quantum Computing! **

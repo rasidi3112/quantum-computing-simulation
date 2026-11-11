@@ -1,5 +1,3 @@
-"""Translation tables: 15 languages, identical keys, consistent placeholders."""
-
 import re
 import string
 from pathlib import Path

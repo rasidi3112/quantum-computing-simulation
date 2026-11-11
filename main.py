@@ -1,20 +1,3 @@
-"""Mini Quantum Lab — Streamlit interface.
-
-Run with ``streamlit run main.py``.  All physics lives in the ``quantum_lab``
-package; this file only wires widgets, session state and translations to it.
-
-Session state
--------------
-``language``       current language name (bound to the language selector)
-``num_qubits``     size of the lab register (bound to its selector)
-``simulator``      ``QuantumSimulator`` holding the lab state
-``circuit``        ``Circuit`` with every gate and measurement applied so far
-``seed`` / ``rng`` user seed and the generator used for projective outcomes
-``shots_result``   last shot-sampling result, tagged with ``state_version``
-``state_version``  bumped whenever the lab state changes
-``flash``          one-shot messages produced by button callbacks
-"""
-
 import numpy as np
 import streamlit as st
 
@@ -44,7 +27,6 @@ if "language" not in st.session_state:
 
 st.set_page_config(
     page_title=get_text(st.session_state.language, "page_title"),
-    page_icon="⚛️",
     layout="wide",
 )
 
@@ -52,13 +34,11 @@ ss = st.session_state
 
 
 def t(key, **kwargs):
-    """Translate ``key`` into the current language."""
     return get_text(ss.language, key, **kwargs)
 
 
 # ------------------------------------------------------------------ helpers
 def format_amplitude(amp):
-    """Compact text for a complex amplitude (same style as version 1.0)."""
     real, imag = float(np.real(amp)), float(np.imag(amp))
     if abs(imag) < 1e-10:
         return f"{real:.4f}"
@@ -68,7 +48,6 @@ def format_amplitude(amp):
 
 
 def ket_string(state, max_terms=4):
-    """Short ket expansion such as ``0.7071|00⟩ + 0.7071|11⟩``."""
     labels = states.basis_labels(int(np.log2(len(state))))
     terms = [
         f"{format_amplitude(amp)}|{label}⟩"
@@ -80,7 +59,6 @@ def ket_string(state, max_terms=4):
 
 
 def palette():
-    """Chart colours matching the active Streamlit theme."""
     try:
         return viz.palette_for(st.context.theme.type)
     except Exception:  # theme information is unavailable on old versions
@@ -99,7 +77,6 @@ def show_chart(fig, key, filename="quantum_lab_chart"):
 
 
 def figures_to_html(title, figures):
-    """Standalone interactive HTML page containing the given figures."""
     parts = [
         fig.to_html(full_html=False, include_plotlyjs="cdn" if i == 0 else False)
         for i, fig in enumerate(figures)
@@ -121,12 +98,10 @@ def show_flash(slot, container=st):
 
 
 def bump():
-    """Mark the lab state as changed (invalidates stored shot results)."""
     ss.state_version += 1
 
 
 def rebuild_lab():
-    """Fresh |0…0⟩ register of the selected size and a re-seeded generator."""
     ss.simulator = QuantumSimulator(ss.num_qubits)
     ss.circuit = Circuit(ss.num_qubits)
     ss.rng = make_rng(int(ss.seed))
@@ -209,7 +184,6 @@ def cb_measure_all():
 
 
 def cb_load_circuit(circuit):
-    """Replace the lab with ``circuit`` (used by the demonstration tabs)."""
     ss.num_qubits = circuit.num_qubits
     rebuild_lab()
     result = circuit.run(rng=ss.rng)
@@ -255,7 +229,7 @@ def render_sidebar():
         help=t("target_qubit_help"),
     )
     spec = GATES[gate_id]
-    st.sidebar.info(f"{spec.emoji} **{spec.name}**\n\n{get_gate_description(lang, spec.name)}")
+    st.sidebar.info(f"**{spec.name}**\n\n{get_gate_description(lang, spec.name)}")
     st.sidebar.button(t("apply_gate_btn"), key="btn_apply_gate", width="stretch",
                       on_click=cb_apply_gate, args=(gate_id, target))
     show_flash("gate", st.sidebar)
@@ -286,8 +260,7 @@ def render_sidebar():
 
 # ---------------------------------------------------------------------- lab
 def display_matrix(matrix, title):
-    """Text rendering of a gate matrix."""
-    st.markdown(f"### 🔢 {t('matrix_title')} {title}")
+    st.markdown(f"### {t('matrix_title')} {title}")
     lines = []
     for row in matrix:
         cells = []
@@ -305,7 +278,7 @@ def display_matrix(matrix, title):
 
 def history_line(op):
     if op.kind == MEASURE:
-        return f"📏 Q{op.targets[0]} = {op.outcome}"
+        return f"M: Q{op.targets[0]} = {op.outcome}"
     if op.kind == GATE and op.controls:
         return f"CNOT: Q{op.controls[0]} → Q{op.targets[0]}"
     return f"{GATES[op.name].name} → Q{op.targets[0]}"
@@ -378,16 +351,15 @@ def render_lab(selected_gate):
 
 # -------------------------------------------------------------------- Bloch
 def render_bloch_cell(vector, title, key):
-    """One sphere with its length, purity and pure/mixed status."""
     length = float(np.linalg.norm(vector))
     show_chart(viz.bloch_figure(vector, title=title, palette=palette()), key, "bloch_sphere")
     col1, col2 = st.columns(2)
     col1.metric(t("bloch_length"), f"{length:.3f}")
     col2.metric(t("purity_label"), f"{(1 + length**2) / 2:.3f}")
     if length > 1 - 1e-6:
-        st.caption(f"🟢 {t('state_pure')}")
+        st.caption(t("state_pure"))
     else:
-        st.caption(f"🟠 {t('state_mixed')}")
+        st.caption(t("state_mixed"))
 
 
 def render_bloch():

@@ -1,22 +1,3 @@
-"""Quantum noise channels and noisy circuit simulation.
-
-Noise model
------------
-*Gate noise*: after every gate, the chosen single-qubit channel acts
-independently on each qubit the gate touched (controls and targets).  Idle
-qubits and measurements are noiseless.  The simulation is exact — it evolves
-the density matrix — rather than a Monte-Carlo average.
-
-Channels (``p`` is the error probability per application, ``0 <= p <= 1``):
-
-* bit flip        ``rho -> (1-p) rho + p X rho X``
-* phase flip      ``rho -> (1-p) rho + p Z rho Z``
-* depolarizing    ``rho -> (1-p) rho + (p/3)(X rho X + Y rho Y + Z rho Z)``
-
-The depolarizing channel shrinks the Bloch vector by ``1 - 4p/3``; ``p = 3/4``
-gives the maximally mixed state.
-"""
-
 from __future__ import annotations
 
 import numpy as np
@@ -65,21 +46,12 @@ _FACTORIES = {
 
 
 def kraus_operators(channel: str, p: float) -> list[np.ndarray]:
-    """Kraus operators of a named channel with error probability ``p``."""
     if channel not in _FACTORIES:
         raise ValueError(f"unknown noise channel {channel!r}; expected one of {CHANNELS}")
     return _FACTORIES[channel](p)
 
 
 def simulate_density(circuit: Circuit, channel: str | None = None, p: float = 0.0) -> DensityMatrix:
-    """Run ``circuit`` on a density matrix, optionally with gate noise.
-
-    Measurements are *non-selective*: the result is the ensemble average over
-    all outcomes, weighted by their probabilities.  Classically conditioned
-    gates are handled exactly by tracking one unnormalised branch per
-    classical record (at most ``2**n`` branches, merged when records agree).
-    With ``channel=None`` (or ``p == 0``) this is the ideal reference.
-    """
     kraus = kraus_operators(channel, p) if channel is not None and p > 0 else None
     if channel is not None:
         _check_probability(p)

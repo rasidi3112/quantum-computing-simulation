@@ -1,15 +1,3 @@
-"""Benchmark: dense-matrix gate application (v1.0) vs tensor contraction (v2.0).
-
-Run from the repository root::
-
-    python benchmarks/bench_gates.py
-
-v1.0 built a ``2^n x 2^n`` matrix with ``numpy.kron`` for every gate and
-multiplied it with the state.  v2.0 contracts the 2x2 gate with one axis of
-the state tensor.  Both are timed on the same random state; the results are
-checked to agree before any number is printed.
-"""
-
 from __future__ import annotations
 
 import sys

@@ -1,5 +1,3 @@
-"""State-vector simulator: state handling, gate behaviour, qubit ordering."""
-
 import numpy as np
 import pytest
 
@@ -11,7 +9,6 @@ SQRT2 = np.sqrt(2)
 
 
 def run(n, *ops, start=None):
-    """Apply ``(gate_id, target)`` or ``("CNOT", control, target)`` tuples."""
     sim = QuantumSimulator(n)
     if start is not None:
         sim.set_state(start)

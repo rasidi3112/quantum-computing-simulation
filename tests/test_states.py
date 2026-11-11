@@ -1,5 +1,3 @@
-"""Reduced states, Bloch vectors, purity and entanglement entropy."""
-
 import numpy as np
 import pytest
 

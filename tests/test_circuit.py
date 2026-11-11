@@ -1,5 +1,3 @@
-"""Circuit model: construction, execution and the text diagram."""
-
 import numpy as np
 import pytest
 

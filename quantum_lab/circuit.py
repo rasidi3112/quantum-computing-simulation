@@ -1,8 +1,3 @@
-"""Circuit model: an ordered list of operations, execution and a text diagram.
-
-Qubit 0 is the top wire of a diagram and the leftmost bit of a basis label.
-"""
-
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
@@ -18,21 +13,6 @@ GATE, MEASURE, UNITARY = "gate", "measure", "unitary"
 
 @dataclass(frozen=True)
 class Operation:
-    """One step of a circuit.
-
-    kind ``"gate"``
-        Named single-qubit gate ``name`` (see :func:`gates.gate_matrix`) on
-        ``targets[0]``, optionally controlled by ``controls`` (quantum) and/or
-        by ``condition`` (classical: applied only if the most recent
-        measurement of qubit ``condition`` gave 1).
-    kind ``"measure"``
-        Projective measurement of ``targets[0]``; ``outcome`` holds the result
-        once the operation has been executed.
-    kind ``"unitary"``
-        Arbitrary unitary ``matrix`` on ``targets`` (first = most significant),
-        drawn as a box labelled ``name``.
-    """
-
     kind: str
     name: str
     targets: tuple[int, ...]
@@ -44,11 +24,9 @@ class Operation:
 
     @property
     def qubits(self) -> tuple[int, ...]:
-        """Every qubit the operation acts on (controls first)."""
         return (*self.controls, *self.targets)
 
     def label(self) -> str:
-        """Text placed on the target wire(s) of a diagram."""
         if self.kind == MEASURE:
             return "[M]" if self.outcome is None else f"[M={self.outcome}]"
         if self.kind == UNITARY:
@@ -65,16 +43,12 @@ class Operation:
 
 @dataclass
 class RunResult:
-    """Outcome of :meth:`Circuit.run`."""
-
     simulator: QuantumSimulator
     outcomes: dict[int, int]  #: last measurement result per measured qubit
     circuit: Circuit  #: executed circuit with measurement outcomes recorded
 
 
 class Circuit:
-    """Ordered list of :class:`Operation` on ``num_qubits`` qubits."""
-
     def __init__(self, num_qubits: int, ops: Sequence[Operation] = ()):
         QuantumSimulator(num_qubits)  # validates the register size
         self.num_qubits = int(num_qubits)
@@ -93,7 +67,6 @@ class Circuit:
 
     # ------------------------------------------------------------- building
     def append(self, op: Operation) -> Circuit:
-        """Validate and add an operation."""
         gates.validate_qubits(op.qubits, self.num_qubits)
         if op.condition is not None:
             gates.validate_qubits([op.condition], self.num_qubits)
@@ -151,13 +124,6 @@ class Circuit:
         forced: Mapping[int, int] | None = None,
         initial_state: np.ndarray | None = None,
     ) -> RunResult:
-        """Execute on a fresh :class:`QuantumSimulator`.
-
-        ``rng`` seeds the measurement outcomes (``None``, int or Generator).
-        ``forced`` maps qubit -> outcome to post-select measurements of that
-        qubit instead of sampling them (deterministic branches for tests and
-        demonstrations).
-        """
         from .measurement import make_rng
 
         rng = make_rng(rng)
@@ -196,7 +162,6 @@ class Circuit:
 
     # -------------------------------------------------------------- drawing
     def layers(self) -> list[list[Operation]]:
-        """Greedy left-packing: operations whose wire spans overlap stay ordered."""
         free = [0] * self.num_qubits  # first free column per wire
         columns: list[list[Operation]] = []
         for op in self.ops:
@@ -213,11 +178,6 @@ class Circuit:
         return columns
 
     def draw(self) -> str:
-        """Text diagram: one wire per qubit, time flows left to right.
-
-        ``●`` control, ``⊕`` CNOT target, ``[G]`` gate, ``[M=1]`` measurement
-        with its result, ``[X^m1]`` gate applied only if qubit 1 measured 1.
-        """
         n = self.num_qubits
         prefix = [f"q{q}: " for q in range(n)]
         pad = max(len(p) for p in prefix)

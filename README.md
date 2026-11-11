@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>An interactive, tested quantum-computing simulator for learning</b><br>
-  Python · NumPy · Streamlit · Plotly — 15 interface languages
+  Python · NumPy · Streamlit · Plotly · 15 interface languages
 </p>
 
 ---
@@ -78,16 +78,16 @@ package itself (`quantum_lab`, without `visualization`) needs only NumPy.
 2. Pick a gate and a target qubit and press **Apply Gate**; for two or more
    qubits, pick control and target and press **Apply CNOT**.
 3. Read the result in the tabs:
-   - **Lab** — circuit diagram, probabilities, amplitudes, phases, state table;
-   - **Bloch Sphere** — one sphere per qubit;
-   - **Measurement** — *Run Measurement* samples shots without touching the
+   - **Lab**: circuit diagram, probabilities, amplitudes, phases, state table;
+   - **Bloch Sphere**: one sphere per qubit;
+   - **Measurement**: *Run Measurement* samples shots without touching the
      state; *Measure Qubit* / *Measure All Qubits* collapse it;
-   - **Entanglement**, **Noise**, **Algorithms** — self-contained
+   - **Entanglement**, **Noise**, **Algorithms**: self-contained
      demonstrations. *Load into Lab* copies a Bell circuit into the lab.
 4. **Reset System** returns to |0…0⟩ and restarts the random generator from the
    seed.
 
-Charts are interactive (hover, zoom, rotate). The 📷 button in a chart's
+Charts are interactive (hover, zoom, rotate). The camera button in a chart's
 toolbar saves a PNG; the *Save …* buttons download a standalone interactive
 HTML file.
 
@@ -130,7 +130,7 @@ print(circuit.run(rng=1).outcomes)        # {0: 0, 1: 0}; the two bits always ag
 **State.** A register of *n* qubits is a complex vector of 2ⁿ amplitudes αᵢ
 with Σ|αᵢ|² = 1, initialised to |0…0⟩.
 
-**Qubit ordering — big-endian, used everywhere.** Qubit 0 is the *leftmost*
+**Qubit ordering: big-endian, used everywhere.** Qubit 0 is the *leftmost*
 bit of a basis label and the *top* wire of a diagram:
 
 ```
@@ -141,7 +141,7 @@ So with two qubits, X on Q0 turns |00⟩ into |10⟩ (index 2). A matrix acting 
 the qubit list `[a, b]` treats `a` as its most significant bit; in particular
 `gates.CNOT` is the matrix for `[control, target]`. This is the textbook
 (Nielsen & Chuang) convention. **Qiskit uses the opposite, little-endian
-order** — reverse the bit strings when comparing.
+order**; reverse the bit strings when comparing.
 
 **Evolution.** Every operator is checked for unitarity (U†U = I, tolerance
 10⁻¹⁰) before it is applied, and the state is never renormalised during
@@ -222,7 +222,7 @@ quantum-computing-simulation/
 ├── main.py                  Streamlit interface (widgets, session state, layout)
 ├── translations.py          original 54 keys × 15 languages + lookup helpers
 ├── translations_extra.py    80 keys added in 2.0 × 15 languages
-├── quantum_lab/             simulation core — no Streamlit imports
+├── quantum_lab/             simulation core, no Streamlit imports
 │   ├── gates.py             gate matrices, unitarity check, dense reference expansions
 │   ├── simulator.py         QuantumSimulator (state vector)
 │   ├── measurement.py       probabilities, shot sampling, projective collapse
@@ -287,7 +287,7 @@ NumPy 2.5.4 / Streamlit 1.67.0 / Plotly 7.1.0.
 
 Version 1.0 built a dense 2ⁿ × 2ⁿ matrix for every gate; 2.0 contracts the
 gate with the state tensor. Measured with `benchmarks/bench_gates.py` (one
-Hadamard, best of several runs, single machine — treat as indicative):
+Hadamard, best of several runs, single machine; treat as indicative):
 
 | Qubits | Dense matrix (1.0) | Contraction (2.0) | Ratio |
 |---|---|---|---|
@@ -299,7 +299,7 @@ Hadamard, best of several runs, single machine — treat as indicative):
 
 At the old three-qubit limit there is no speed-up (input validation costs a
 few microseconds); the benefit is that larger registers became practical.
-Simulation cost still doubles with every qubit — this is a teaching tool for
+Simulation cost still doubles with every qubit. This is a teaching tool for
 small registers, not a general-purpose simulator.
 
 ## Known limitations
@@ -321,7 +321,7 @@ small registers, not a general-purpose simulator.
 
 ## Changes from 1.0 that may affect you
 
-- **CNOT results differ — the old ones were wrong.** 1.0 mixed two qubit
+- **CNOT results differ because the old ones were wrong.** 1.0 mixed two qubit
   orderings, so circuits combining single-qubit gates with CNOT gave incorrect
   states (see `docs/AUDIT.md`, finding Q1).
 - `QuantumSimulator` moved from `main.py` to `quantum_lab`. Its 1.0 methods
@@ -346,7 +346,7 @@ small registers, not a general-purpose simulator.
 Dependencies are installed from `requirements.txt`; no secrets or environment
 variables are needed. These steps were written from experience with the
 platform and could not be checked against its current documentation while
-preparing this release — if the screens differ, follow
+preparing this release. If the screens differ, follow
 <https://docs.streamlit.io/deploy/streamlit-community-cloud>.
 
 The `.devcontainer` configuration starts Streamlit with CORS and XSRF

@@ -1,6 +1,6 @@
-# Mini Quantum Lab — Codebase Audit (v1.0 baseline)
+# Mini Quantum Lab: Codebase Audit (v1.0 baseline)
 
-**Scope:** every tracked file at commit `d30f36a` — `main.py` (469 lines),
+**Scope:** every tracked file at commit `d30f36a`: `main.py` (469 lines),
 `translations.py` (1189 lines), `requirements.txt`, `README.md`,
 `contoh-penggunaan.txt`, `.gitignore`, `.devcontainer/devcontainer.json`, `assets/`.
 There were no tests, no CI configuration and no deployment files besides the
@@ -57,7 +57,7 @@ headless reruns `plt.get_fignums()` stayed at 0, so no figure leak was observed.
 
 ## 2. Quantum-mechanical findings
 
-### Q1 — Mixed endianness between `_expand_gate` and `_create_cnot_matrix` (Critical)
+### Q1: Mixed endianness between `_expand_gate` and `_create_cnot_matrix` (Critical)
 
 `_expand_gate` (lines 50-66) builds `G₀ ⊗ G₁ ⊗ … ⊗ Gₙ₋₁` with `np.kron`, which
 makes **qubit 0 the most significant bit** of the basis index (big-endian).
@@ -73,23 +73,23 @@ original class:
 
 | Circuit (as labelled in the UI) | Original output | Correct output |
 |---|---|---|
-| H(Q0), CNOT(control Q0 → target Q1) | (\|00⟩ + \|10⟩)/√2 — a product state | (\|00⟩ + \|11⟩)/√2 |
+| H(Q0), CNOT(control Q0 → target Q1) | (\|00⟩ + \|10⟩)/√2, a product state | (\|00⟩ + \|11⟩)/√2 |
 | X(Q0), CNOT(Q0 → Q1) | \|10⟩ (target not flipped) | \|11⟩ |
 | X(Q1), CNOT(Q0 → Q1) | \|11⟩ (flipped although control is \|0⟩) | \|01⟩ |
 | 3 qubits: X(Q0), CNOT(Q0 → Q2) | \|100⟩ | \|101⟩ |
 
-Consequence: "Eksperimen 2" in `contoh-penggunaan.txt` (the Bell state) — the
-project's own flagship example — does not produce an entangled state.
+Consequence: "Eksperimen 2" in `contoh-penggunaan.txt` (the Bell state), the
+project's own flagship example, does not produce an entangled state.
 
 **Fix:** adopt one convention everywhere (big-endian, see
 `README.md` → *Quantum mathematical conventions*), reimplement CNOT with it and
 lock it down with tests.
 
-### Q2 — Normalisation after each gate masks errors (High)
+### Q2: Normalisation after each gate masks errors (High)
 
 `apply_gate` ends with `self.state /= np.linalg.norm(self.state)` (line 48).
 A unitary never changes the norm, so this line can only have an effect when the
-operator is *not* unitary — in which case it silently converts a bug into a
+operator is *not* unitary, in which case it silently converts a bug into a
 plausible-looking state. Reproduced: applying `2·I` is accepted and the state
 norm stays 1.0.
 
@@ -97,23 +97,23 @@ norm stays 1.0.
 and never renormalise during unitary evolution. Renormalisation is physically
 meaningful only after a projective measurement.
 
-### Q3 — CNOT with `control == target` is non-unitary (High)
+### Q3: CNOT with `control == target` is non-unitary (High)
 
 For `control == target` the loop in `_create_cnot_matrix` writes two rows with
 a 1 in the same column. Together with Q2, `|00⟩` turns into
-`(|00⟩ + |01⟩)/√2` — a superposition manufactured by the bug. The UI prevents
+`(|00⟩ + |01⟩)/√2`, a superposition manufactured by the bug. The UI prevents
 this combination, the class does not.
 
 **Fix:** reject `control == target` with a `ValueError`.
 
-### Q4 — Out-of-range qubit index is silently ignored (Medium)
+### Q4: Out-of-range qubit index is silently ignored (Medium)
 
 `_expand_gate` only compares `i == target`; with `target = 5` on a 2-qubit
 system it returns the identity and reports success.
 
 **Fix:** validate every qubit index and raise `ValueError`.
 
-### Q5 — `get_amplitudes()` exposes internal state (Medium)
+### Q5: `get_amplitudes()` exposes internal state (Medium)
 
 It returns `self.state` itself; mutating the returned array corrupts the
 simulator (reproduced: writing 0 into it yields the zero vector).
@@ -131,7 +131,7 @@ inconsistency described in Q1.
 
 ## 3. Measurement findings
 
-### M1 — Measurement is re-sampled on every rerun, not reproducible (High)
+### M1: Measurement is re-sampled on every rerun, not reproducible (High)
 
 `plot_measurement_histogram` calls `simulator.measure(shots)` (line 202) on
 every script execution. Streamlit re-executes the script for any widget
@@ -142,7 +142,7 @@ unseeded generator, so results can never be reproduced.
 **Fix:** explicit "run measurement" action, configurable seed
 (`numpy.random.default_rng`), results kept in session state.
 
-### M2 — No projective measurement (High)
+### M2: No projective measurement (High)
 
 The introduction text explains collapse, but the simulator cannot perform one:
 `measure()` only draws samples from `|αᵢ|²` and leaves the state untouched.
@@ -152,7 +152,7 @@ measurement of one system are different operations and both are needed.
 **Fix:** add `measure_qubit` / `measure_all` (collapse + renormalise) alongside
 shot sampling, and label the difference in the UI.
 
-### M3 — Sampler receives raw probabilities (Low)
+### M3: Sampler receives raw probabilities (Low)
 
 `np.random.choice(p=probs)` raises `ValueError` when `sum(p)` deviates from 1
 beyond its tolerance. With the per-gate renormalisation removed (Q2) this must
@@ -165,7 +165,7 @@ vector before sampling.
 
 ## 4. UI / UX findings
 
-- **U1 (Reproduced).** Plot titles contain emoji (`📊`, `🌊`) and, in 10 of 15
+- **U1 (Reproduced).** Plot titles contain emoji (``, ``) and, in 10 of 15
   languages, non-Latin text. Matplotlib's default font has none of these
   glyphs; headless runs emit `Glyph … missing from font(s) DejaVu Sans` for
   every such character and the plots show empty boxes. The saved PNGs have the
@@ -227,7 +227,7 @@ vector before sampling.
 
 ## 9. Internationalisation
 
-- All 15 languages define exactly the same 54 keys — verified programmatically.
+- All 15 languages define exactly the same 54 keys, verified programmatically.
 - **I1.** `num_qubits_help` hard-codes the range "1-3" in every language, so the
   limit cannot change without editing 15 strings.
 
@@ -271,11 +271,11 @@ the fix; all 500 tests pass (see the README for the verified environments).
 | S1 | Fixed | One structured `Circuit` in session state | `test_app.py` |
 | S2 | Fixed | Language selector bound to session state by key | `test_app.py` |
 | P1 | Fixed | Tensor contraction, O(2ⁿ) per gate | `benchmarks/bench_gates.py` |
-| D1 | Fixed | `qiskit` and `matplotlib` removed, `plotly` added, lower bounds tested | — |
-| D2 | Fixed | README rewritten | — |
-| D3 | Fixed | Placeholder removed, `.gitignore` cleaned | — |
-| C1 | Documented | Dev-container flags left as they are (Codespaces needs them); warning added to the README | — |
-| T1 | Fixed | pytest suite | — |
+| D1 | Fixed | `qiskit` and `matplotlib` removed, `plotly` added, lower bounds tested | n/a |
+| D2 | Fixed | README rewritten | n/a |
+| D3 | Fixed | Placeholder removed, `.gitignore` cleaned | n/a |
+| C1 | Documented | Dev-container flags left as they are (Codespaces needs them); warning added to the README | n/a |
+| T1 | Fixed | pytest suite | n/a |
 | I1 | Fixed | Range is a `{max_qubits}` placeholder | `test_translations.py` |
 
 Found while doing the work, not in the original audit:
